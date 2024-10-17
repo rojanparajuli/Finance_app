@@ -1,3 +1,4 @@
+import 'package:finance/authentication/view/login_screen.dart';
 import 'package:finance/bloc/splash_screen_bloc.dart';
 import 'package:finance/bloc/splash_screen_event.dart';
 import 'package:finance/bloc/splash_screen_state.dart';
@@ -28,7 +29,7 @@ class SplashView extends StatelessWidget {
         listener: (context, state) {
           if (state is SplashCompleted) {
             Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) =>  CircularProgressIndicator()),
+              MaterialPageRoute(builder: (_) =>  const LoginScreen()),
             );
           }
         },
