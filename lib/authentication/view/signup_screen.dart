@@ -33,9 +33,10 @@ class _SignUpPageState extends State<SignUpPage> {
           'Create Account',
           style: GoogleFonts.lora(fontSize: 24, fontWeight: FontWeight.bold),
         ),
-        backgroundColor: Appcolor.primary,
+        backgroundColor: const Color(0xFFF4F4F4),
         centerTitle: true,
         elevation: 0,
+        automaticallyImplyLeading: false,
       ),
       body: BlocListener<SignUpBloc, SignUpState>(
         listener: (context, state) {
@@ -95,8 +96,8 @@ class _SignUpPageState extends State<SignUpPage> {
                       padding: const EdgeInsets.only(bottom: 30.0),
                       child: Image.asset(
                         'assets/Firebase.png',
-                        height: 100,
-                        width: 100,
+                        height: 200,
+                        width: 200,
                       ),
                     ),
                     GFTextField(
@@ -180,11 +181,11 @@ class _SignUpPageState extends State<SignUpPage> {
                       obscureText: true,
                       style: GoogleFonts.lora(fontSize: 16),
                     ),
-                    const SizedBox(height: 20),
+                    const SizedBox(height: 10),
                     GFCheckboxListTile(
                       title: Text(
                         "I agree to the Terms and Conditions",
-                        style: GoogleFonts.lora(fontSize: 16),
+                        style: GoogleFonts.lora(fontSize: 13),
                       ),
                       size: 25,
                       value: termsAccepted,
@@ -196,7 +197,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       activeBgColor: Appcolor.primary,
                       type: GFCheckboxType.circle,
                     ),
-                    const SizedBox(height: 30),
+                    const SizedBox(height: 10),
                     GFButton(
                       onPressed: () {
                         final email = _emailController.text;
