@@ -22,11 +22,11 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     });
 
     on<GoogleSignUpSubmitted>((event, emit) async {
-      emit(SignUpLoading());
+      emit(GoogleSignUpLoading()); 
       try {
         final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
         if (googleUser == null) {
-          emit(const SignUpFailure(error: 'Google Sign-In canceled.'));
+          emit(const GoogleSignUpFailure(error: 'Google Sign-In canceled.'));
           return;
         }
         final GoogleSignInAuthentication googleAuth =
@@ -37,11 +37,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         );
 
         await _firebaseAuth.signInWithCredential(credential);
-
-        // Emit success state
-        emit(SignUpSuccess());
+        emit(GoogleSignUpSuccess()); // Show success state
       } catch (e) {
-        emit(SignUpFailure(error: e.toString()));
+        emit(GoogleSignUpFailure(error: e.toString())); // Show failure state
       }
     });
 
