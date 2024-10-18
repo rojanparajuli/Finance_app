@@ -1,8 +1,12 @@
 import 'package:finance/authentication/bloc/sign_up/sign_up_bloc.dart';
 import 'package:finance/authentication/bloc/sign_up/sign_up_event.dart';
 import 'package:finance/authentication/bloc/sign_up/sign_up_state.dart';
+import 'package:finance/constant/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:lottie/lottie.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:getwidget/getwidget.dart';
 
 class SignUpPage extends StatefulWidget {
   const SignUpPage({super.key});
@@ -15,19 +19,33 @@ class SignUpPage extends StatefulWidget {
 class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
-  final TextEditingController _confirmPasswordController = TextEditingController();
+  final TextEditingController _confirmPasswordController =
+      TextEditingController();
   final TextEditingController _fullNameController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(title: const Text('Sign Up')),
+      backgroundColor: const Color(0xFFF4F4F4), // Soft background color
+      appBar: AppBar(
+        title: Text(
+          'Create Account',
+          style: GoogleFonts.lora(fontSize: 24, fontWeight: FontWeight.bold),
+        ),
+        backgroundColor: Appcolor.primary,
+        centerTitle: true,
+        elevation: 0, // Flat app bar
+      ),
       body: BlocListener<SignUpBloc, SignUpState>(
         listener: (context, state) {
           if (state is SignUpSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Sign up successful!')),
+              const SnackBar(
+                content: Text('Sign up successful!'),
+                backgroundColor: Colors.green,
+              ),
             );
+            Navigator.pop(context);
           } else if (state is SignUpFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Error: ${state.error}')),
@@ -37,7 +55,13 @@ class _SignUpPageState extends State<SignUpPage> {
         child: BlocBuilder<SignUpBloc, SignUpState>(
           builder: (context, state) {
             if (state is SignUpLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return Center(
+                child: SizedBox(
+                  height: 200,
+                  width: 200,
+                  child: Lottie.asset('assets/animation.json'),
+                ),
+              );
             }
 
             bool termsAccepted = false;
@@ -45,75 +69,261 @@ class _SignUpPageState extends State<SignUpPage> {
               termsAccepted = state.termsAccepted;
             }
 
-            return Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Column(
-                children: [
-                  TextField(
-                    controller: _fullNameController,
-                    decoration: const InputDecoration(labelText: 'Full Name'),
-                  ),
-                  TextField(
-                    controller: _emailController,
-                    decoration: const InputDecoration(labelText: 'Email'),
-                  ),
-                  TextField(
-                    controller: _passwordController,
-                    decoration: const InputDecoration(labelText: 'Password'),
-                    obscureText: true,
-                  ),
-                  TextField(
-                    controller: _confirmPasswordController,
-                    decoration: const InputDecoration(labelText: 'Confirm Password'),
-                    obscureText: true,
-                  ),
-                  CheckboxListTile(
-                    title: const Text("I agree to the Terms and Conditions"),
-                    value: termsAccepted,
-                    onChanged: (value) {
-                      context.read<SignUpBloc>().add(ToggleTermsAccepted(value!));
-                    },
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton(
-                    onPressed: () {
-                      final email = _emailController.text;
-                      final password = _passwordController.text;
-                      final confirmPassword = _confirmPasswordController.text;
-                      final fullName = _fullNameController.text;
-
-                      if (password != confirmPassword) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('Passwords do not match')),
-                        );
-                        return;
-                      }
-
-                      if (!termsAccepted) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(content: Text('You must accept the terms')),
-                        );
-                        return;
-                      }
-
-                      context.read<SignUpBloc>().add(
-                            SignUpSubmitted(email, password, fullName),
-                          );
-                    },
-                    child: const Text('Sign Up'),
-                  ),
-                  const SizedBox(height: 20),
-                  ElevatedButton.icon(
-                    onPressed: () {
-                      context.read<SignUpBloc>().add(GoogleSignUpSubmitted());
-                    },
-                    icon: const Icon(Icons.account_circle),
-                    label: const Text('Continue with Google'),
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Colors.redAccent,
+            return SingleChildScrollView(
+              child: Padding(
+                padding: const EdgeInsets.all(20.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    // App Logo at the top
+                    Padding(
+                      padding: const EdgeInsets.only(bottom: 30.0),
+                      child: Image.asset(
+                        'assets/Firebase.png', // App logo here
+                        height: 100,
+                        width: 100,
+                      ),
                     ),
-                  ),
-                ],
+
+                    // Full Name Field
+                    GFTextField(
+                      controller: _fullNameController,
+                      decoration: InputDecoration(
+                        labelText: 'Full Name',
+                        labelStyle: GoogleFonts.lora(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                        filled: true,
+                        fillColor: Colors.white,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Colors.grey),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Colors.blue),
+                        ),
+                      ),
+                      style: GoogleFonts.lora(fontSize: 16),
+                    ),
+                    const SizedBox(height: 10),
+
+                    // Email Field
+                    GFTextField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        labelText: 'Email',
+                        labelStyle: GoogleFonts.lora(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                        filled: true,
+                        fillColor: Colors.white,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Colors.grey),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Colors.blue),
+                        ),
+                      ),
+                      style: GoogleFonts.lora(fontSize: 16),
+                    ),
+                    const SizedBox(height: 10),
+
+                    // Password Field
+                    GFTextField(
+                      controller: _passwordController,
+                      decoration: InputDecoration(
+                        labelText: 'Password',
+                        labelStyle: GoogleFonts.lora(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                        filled: true,
+                        fillColor: Colors.white,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Colors.grey),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Colors.blue),
+                        ),
+                      ),
+                      obscureText: true,
+                      style: GoogleFonts.lora(fontSize: 16),
+                    ),
+                    const SizedBox(height: 10),
+
+                    // Confirm Password Field
+                    GFTextField(
+                      controller: _confirmPasswordController,
+                      decoration: InputDecoration(
+                        labelText: 'Confirm Password',
+                        labelStyle: GoogleFonts.lora(
+                            fontSize: 18, fontWeight: FontWeight.w600),
+                        filled: true,
+                        fillColor: Colors.white,
+                        enabledBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Colors.grey),
+                        ),
+                        focusedBorder: OutlineInputBorder(
+                          borderRadius: BorderRadius.circular(12),
+                          borderSide: const BorderSide(color: Colors.blue),
+                        ),
+                      ),
+                      obscureText: true,
+                      style: GoogleFonts.lora(fontSize: 16),
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Terms and Conditions Checkbox
+                    GFCheckboxListTile(
+                      title: Text(
+                        "I agree to the Terms and Conditions",
+                        style: GoogleFonts.lora(fontSize: 16),
+                      ),
+                      size: 25,
+                      value: termsAccepted,
+                      onChanged: (value) {
+                        context.read<SignUpBloc>().add(ToggleTermsAccepted(value));
+                      },
+                      activeBgColor: Appcolor.primary,
+                      type: GFCheckboxType.circle,
+                    ),
+                    const SizedBox(height: 30),
+
+                    // Sign Up Button
+                    GFButton(
+                      onPressed: () {
+                        final email = _emailController.text;
+                        final password = _passwordController.text;
+                        final confirmPassword =
+                            _confirmPasswordController.text;
+                        final fullName = _fullNameController.text;
+
+                        if (password != confirmPassword) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('Passwords do not match')),
+                          );
+                          return;
+                        }
+
+                        if (!termsAccepted) {
+                          ScaffoldMessenger.of(context).showSnackBar(
+                            const SnackBar(
+                                content: Text('You must accept the terms')),
+                          );
+                          return;
+                        }
+
+                        context.read<SignUpBloc>().add(
+                              SignUpSubmitted(email, password, fullName),
+                            );
+                      },
+                      color: Appcolor.primary,
+                      text: 'Sign Up',
+                      textStyle: GoogleFonts.lora(
+                          color: Colors.white,
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold),
+                      shape: GFButtonShape.pills,
+                      size: GFSize.LARGE,
+                      fullWidthButton: true,
+                    ),
+                    const SizedBox(height: 20),
+
+                    // Google Sign Up Button
+                    SizedBox(
+                      width: 400,
+                      child: GestureDetector(
+                        onTap: () {
+                          context.read<SignUpBloc>().add(GoogleSignUpSubmitted());
+                        },
+                        child: Container(
+                          decoration: BoxDecoration(
+                            color: Colors.white,
+                            borderRadius: BorderRadius.circular(15),
+                            border: Border.all(color: Colors.grey),
+                            boxShadow: [
+                              BoxShadow(
+                                color: Colors.grey.withOpacity(0.5),
+                                spreadRadius: 1,
+                                blurRadius: 7,
+                                offset: const Offset(0, 3),
+                              ),
+                            ],
+                          ),
+                          padding: const EdgeInsets.symmetric(
+                              horizontal: 20, vertical: 20),
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Image.asset(
+                                'assets/google_logo.png',
+                                height: 24,
+                              ),
+                              const SizedBox(width: 10),
+                           RichText(
+                                          text: const TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: 'Continue with ',
+                                                style: TextStyle(
+                                                    color: Colors.black),
+                                              ),
+                                              TextSpan(
+                                                text: 'G',
+                                                style: TextStyle(
+                                                    color: Colors.blue,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              TextSpan(
+                                                text: 'o',
+                                                style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              TextSpan(
+                                                text: 'o',
+                                                style: TextStyle(
+                                                    color: Color.fromARGB(
+                                                        255, 205, 185, 3),
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              TextSpan(
+                                                text: 'g',
+                                                style: TextStyle(
+                                                    color: Colors.blue,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              TextSpan(
+                                                text: 'l',
+                                                style: TextStyle(
+                                                    color: Colors.green,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                              TextSpan(
+                                                text: 'e',
+                                                style: TextStyle(
+                                                    color: Colors.red,
+                                                    fontWeight:
+                                                        FontWeight.bold),
+                                              ),
+                                            ],
+                                          ),
+                                        ),
+                            ],
+                          ),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
               ),
             );
           },

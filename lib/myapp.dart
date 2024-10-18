@@ -19,7 +19,7 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(create: (context) => LoginBloc(FirebaseAuth.instance)),
         BlocProvider(create: (context) => SignUpBloc(FirebaseAuth.instance)),
-     ],
+      ],
       child: MaterialApp(
         title: 'Finance App',
         theme: ThemeData(

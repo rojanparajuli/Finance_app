@@ -47,6 +47,7 @@ dependencies:
   cloud_firestore: ^5.4.4
   google_sign_in: ^6.2.1
   bloc: ^8.1.4
+  getwidget: ^4.0.0
 
 dev_dependencies:
   flutter_test:
