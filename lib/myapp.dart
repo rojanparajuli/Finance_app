@@ -21,6 +21,7 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => SignUpBloc(FirebaseAuth.instance)),
       ],
       child: MaterialApp(
+        debugShowCheckedModeBanner: false,
         title: 'Finance App',
         theme: ThemeData(
           useMaterial3: true,
