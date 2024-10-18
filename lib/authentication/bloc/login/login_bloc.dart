@@ -1,5 +1,5 @@
-import 'package:finance/authentication/bloc/login_event.dart';
-import 'package:finance/authentication/bloc/login_state.dart';
+import 'package:finance/authentication/bloc/login/login_event.dart';
+import 'package:finance/authentication/bloc/login/login_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {

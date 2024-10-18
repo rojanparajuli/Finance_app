@@ -1,6 +1,7 @@
-import 'package:finance/authentication/bloc/login_bloc.dart';
-import 'package:finance/authentication/bloc/login_state.dart';
+import 'package:finance/authentication/bloc/login/login_bloc.dart';
+import 'package:finance/authentication/bloc/login/login_state.dart';
 import 'package:finance/authentication/view/forget_password_view.dart';
+import 'package:finance/authentication/view/signup_screen.dart';
 import 'package:finance/screen/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -56,7 +57,7 @@ class _LoginScreenState extends State<LoginScreen> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Image.asset(
-                    'assets/3ba8f-mega.png',
+                    'assets/Firebase.png',
                     height: 200,
                   ),
                   const SizedBox(height: 40),
@@ -90,7 +91,10 @@ class _LoginScreenState extends State<LoginScreen> {
                               decorationColor: Colors.blue,
                             ),
                           ),
-                        )
+                        ),
+                        ElevatedButton(onPressed: (){
+                          Navigator.push(context, MaterialPageRoute(builder: (context)=> const SignUpPage()));
+                        }, child: const Text('Signup'))
                       ],
                     ),
                   ),
