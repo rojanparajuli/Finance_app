@@ -17,9 +17,9 @@ class MyApp extends StatelessWidget {
         BlocProvider<SplashBloc>(
           create: (context) => SplashBloc()..add(SplashStarted()),
         ),
+        BlocProvider(create: (context) => LoginBloc(FirebaseAuth.instance)),
         BlocProvider(create: (context) => SignUpBloc(FirebaseAuth.instance)),
-        BlocProvider<LoginBloc>(create: (context) => LoginBloc()),
-      ],
+     ],
       child: MaterialApp(
         title: 'Finance App',
         theme: ThemeData(

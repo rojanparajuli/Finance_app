@@ -5,7 +5,6 @@ import 'package:finance/bloc/splash_screen_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class SplashScreen extends StatelessWidget {
   const SplashScreen({super.key});
 
@@ -29,7 +28,7 @@ class SplashView extends StatelessWidget {
         listener: (context, state) {
           if (state is SplashCompleted) {
             Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) =>  const LoginScreen()),
+              MaterialPageRoute(builder: (_) => LoginPage()),
             );
           }
         },
