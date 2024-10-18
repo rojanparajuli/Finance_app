@@ -2,6 +2,7 @@ import 'package:finance/authentication/bloc/sign_up/sign_up_bloc.dart';
 import 'package:finance/authentication/bloc/sign_up/sign_up_event.dart';
 import 'package:finance/authentication/bloc/sign_up/sign_up_state.dart';
 import 'package:finance/constant/colors.dart';
+import 'package:finance/screen/home/home.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -26,7 +27,7 @@ class _SignUpPageState extends State<SignUpPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFFF4F4F4), // Soft background color
+      backgroundColor: const Color(0xFFF4F4F4),
       appBar: AppBar(
         title: Text(
           'Create Account',
@@ -34,7 +35,7 @@ class _SignUpPageState extends State<SignUpPage> {
         ),
         backgroundColor: Appcolor.primary,
         centerTitle: true,
-        elevation: 0, // Flat app bar
+        elevation: 0,
       ),
       body: BlocListener<SignUpBloc, SignUpState>(
         listener: (context, state) {
@@ -45,10 +46,25 @@ class _SignUpPageState extends State<SignUpPage> {
                 backgroundColor: Colors.green,
               ),
             );
-            Navigator.pop(context);
+            Navigator.pop(context); // Pop the current page for manual sign-up
           } else if (state is SignUpFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Error: ${state.error}')),
+            );
+          } else if (state is GoogleSignUpSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(
+                content: Text('Google Sign up successful!'),
+                backgroundColor: Colors.green,
+              ),
+            );
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+          } else if (state is GoogleSignUpFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              SnackBar(content: Text('Google Sign up failed: ${state.error}')),
             );
           }
         },
@@ -75,17 +91,14 @@ class _SignUpPageState extends State<SignUpPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.center,
                   children: [
-                    // App Logo at the top
                     Padding(
                       padding: const EdgeInsets.only(bottom: 30.0),
                       child: Image.asset(
-                        'assets/Firebase.png', // App logo here
+                        'assets/Firebase.png',
                         height: 100,
                         width: 100,
                       ),
                     ),
-
-                    // Full Name Field
                     GFTextField(
                       controller: _fullNameController,
                       decoration: InputDecoration(
@@ -106,8 +119,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       style: GoogleFonts.lora(fontSize: 16),
                     ),
                     const SizedBox(height: 10),
-
-                    // Email Field
                     GFTextField(
                       controller: _emailController,
                       decoration: InputDecoration(
@@ -128,8 +139,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       style: GoogleFonts.lora(fontSize: 16),
                     ),
                     const SizedBox(height: 10),
-
-                    // Password Field
                     GFTextField(
                       controller: _passwordController,
                       decoration: InputDecoration(
@@ -151,8 +160,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       style: GoogleFonts.lora(fontSize: 16),
                     ),
                     const SizedBox(height: 10),
-
-                    // Confirm Password Field
                     GFTextField(
                       controller: _confirmPasswordController,
                       decoration: InputDecoration(
@@ -174,8 +181,6 @@ class _SignUpPageState extends State<SignUpPage> {
                       style: GoogleFonts.lora(fontSize: 16),
                     ),
                     const SizedBox(height: 20),
-
-                    // Terms and Conditions Checkbox
                     GFCheckboxListTile(
                       title: Text(
                         "I agree to the Terms and Conditions",
@@ -184,20 +189,19 @@ class _SignUpPageState extends State<SignUpPage> {
                       size: 25,
                       value: termsAccepted,
                       onChanged: (value) {
-                        context.read<SignUpBloc>().add(ToggleTermsAccepted(value));
+                        context
+                            .read<SignUpBloc>()
+                            .add(ToggleTermsAccepted(value));
                       },
                       activeBgColor: Appcolor.primary,
                       type: GFCheckboxType.circle,
                     ),
                     const SizedBox(height: 30),
-
-                    // Sign Up Button
                     GFButton(
                       onPressed: () {
                         final email = _emailController.text;
                         final password = _passwordController.text;
-                        final confirmPassword =
-                            _confirmPasswordController.text;
+                        final confirmPassword = _confirmPasswordController.text;
                         final fullName = _fullNameController.text;
 
                         if (password != confirmPassword) {
@@ -231,13 +235,13 @@ class _SignUpPageState extends State<SignUpPage> {
                       fullWidthButton: true,
                     ),
                     const SizedBox(height: 20),
-
-                    // Google Sign Up Button
                     SizedBox(
                       width: 400,
                       child: GestureDetector(
                         onTap: () {
-                          context.read<SignUpBloc>().add(GoogleSignUpSubmitted());
+                          context
+                              .read<SignUpBloc>()
+                              .add(GoogleSignUpSubmitted());
                         },
                         child: Container(
                           decoration: BoxDecoration(
@@ -263,60 +267,53 @@ class _SignUpPageState extends State<SignUpPage> {
                                 height: 24,
                               ),
                               const SizedBox(width: 10),
-                           RichText(
-                                          text: const TextSpan(
-                                            children: [
-                                              TextSpan(
-                                                text: 'Continue with ',
-                                                style: TextStyle(
-                                                    color: Colors.black),
-                                              ),
-                                              TextSpan(
-                                                text: 'G',
-                                                style: TextStyle(
-                                                    color: Colors.blue,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              TextSpan(
-                                                text: 'o',
-                                                style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              TextSpan(
-                                                text: 'o',
-                                                style: TextStyle(
-                                                    color: Color.fromARGB(
-                                                        255, 205, 185, 3),
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              TextSpan(
-                                                text: 'g',
-                                                style: TextStyle(
-                                                    color: Colors.blue,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              TextSpan(
-                                                text: 'l',
-                                                style: TextStyle(
-                                                    color: Colors.green,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                              TextSpan(
-                                                text: 'e',
-                                                style: TextStyle(
-                                                    color: Colors.red,
-                                                    fontWeight:
-                                                        FontWeight.bold),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
+                              RichText(
+                                text: const TextSpan(
+                                  children: [
+                                    TextSpan(
+                                      text: 'Continue with ',
+                                      style: TextStyle(color: Colors.black),
+                                    ),
+                                    TextSpan(
+                                      text: 'G',
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                      text: 'o',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                      text: 'o',
+                                      style: TextStyle(
+                                          color:
+                                              Color.fromARGB(255, 205, 185, 3),
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                      text: 'g',
+                                      style: TextStyle(
+                                          color: Colors.blue,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                      text: 'l',
+                                      style: TextStyle(
+                                          color: Colors.green,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                    TextSpan(
+                                      text: 'e',
+                                      style: TextStyle(
+                                          color: Colors.red,
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),
