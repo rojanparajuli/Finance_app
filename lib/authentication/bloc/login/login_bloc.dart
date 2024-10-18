@@ -1,14 +1,30 @@
-import 'package:finance/authentication/bloc/login/login_event.dart';
-import 'package:finance/authentication/bloc/login/login_state.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:bloc/bloc.dart';
+import 'login_event.dart';
+import 'login_state.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 
 class LoginBloc extends Bloc<LoginEvent, LoginState> {
-  LoginBloc() : super(LoginInitial());
+  final FirebaseAuth _firebaseAuth;
 
-  Stream<LoginState> mapEventToState(LoginEvent event) async* {
-    if (event is LoginButtonPressed) {
-      yield LoginLoading();
-      await Future.delayed(const Duration(seconds: 2));
-    }
+  LoginBloc(this._firebaseAuth) : super(LoginInitial()){
+    on<LoginSubmitted>(mapEventToState);
+  }
+
+
+  Future<void> mapEventToState(LoginSubmitted event, Emitter<LoginState> emit) async {
+   
+     emit(LoginLoading());
+      try {
+        await _firebaseAuth.signInWithEmailAndPassword(
+          email: event.email,
+          password: event.password,
+        );
+        emit(LoginSuccess());
+        
+      } catch (error) {
+        emit(LoginFailure(error.toString()));
+        
+      }
+    
   }
 }
