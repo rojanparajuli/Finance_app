@@ -3,6 +3,7 @@ import 'package:finance/authentication/bloc/sign_up/sign_up_event.dart';
 import 'package:finance/authentication/view/forget_password_view.dart';
 import 'package:finance/authentication/view/signup_screen.dart';
 import 'package:finance/constant/colors.dart';
+import 'package:finance/screen/home/home.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -41,9 +42,17 @@ class _LoginPageState extends State<LoginPage> {
       body: BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
           if (state is LoginSuccess) {
-            ScaffoldMessenger.of(context).showSnackBar(
-              const SnackBar(content: Text('Login successful!')),
-            );
+            ScaffoldMessenger.of(context)
+                .showSnackBar(
+                  const SnackBar(content: Text('Login successful!')),
+                )
+                .closed
+                .then((_) {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()),
+              );
+            });
           } else if (state is LoginFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Error: ${state.error}')),
