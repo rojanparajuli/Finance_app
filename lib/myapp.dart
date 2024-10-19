@@ -1,6 +1,7 @@
 import 'package:finance/animation/splash_screen.dart';
 import 'package:finance/authentication/bloc/forget_password/forget_password_bloc.dart';
 import 'package:finance/authentication/bloc/login/login_bloc.dart';
+import 'package:finance/authentication/bloc/login/login_state.dart';
 import 'package:finance/authentication/bloc/sign_up/sign_up_bloc.dart';
 import 'package:finance/bloc/shop/shop_bloc.dart';
 import 'package:finance/bloc/shop/shop_event.dart';
@@ -41,7 +42,14 @@ class MyApp extends StatelessWidget {
         theme: ThemeData(
           useMaterial3: true,
         ),
-        home: const SplashScreen(),
+        home: BlocListener<LoginBloc, LoginState>(
+          listener: (context, state) {
+            if (state is LoginSuccess) {
+              BlocProvider.of<ShopBloc>(context).add(LoadShops());
+            }
+          },
+          child: const SplashScreen(),
+        ),
       ),
     );
   }

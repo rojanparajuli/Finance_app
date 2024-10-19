@@ -2,6 +2,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:finance/bloc/shop/shop_event.dart';
 import 'package:finance/bloc/shop/shop_state.dart';
 import 'package:finance/model/shop/shop_model.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class ShopBloc extends Bloc<ShopEvent, ShopState> {
@@ -14,24 +15,36 @@ class ShopBloc extends Bloc<ShopEvent, ShopState> {
     on<DeleteShop>(_onDeleteShop);
   }
 
-  Future<void> _onLoadShops(LoadShops event, Emitter<ShopState> emit) async {
+Future<void> _onLoadShops(LoadShops event, Emitter<ShopState> emit) async {
+  final currentUser = FirebaseAuth.instance.currentUser;
+  if (currentUser != null) {
+    String uid = currentUser.uid;
     try {
-      QuerySnapshot snapshot = await firestore.collection('shops').get();
+      QuerySnapshot snapshot = await firestore
+          .collection('users')
+          .doc(uid)
+          .collection('shops')
+          .get();
       List<Shop> shops = snapshot.docs.map((doc) => Shop.fromFirestore(doc)).toList();
       emit(ShopLoaded(shops));
     } catch (e) {
       emit(ShopError('Failed to load shops.'));
     }
   }
+}
 
-  Future<void> _onAddShop(AddShop event, Emitter<ShopState> emit) async {
+Future<void> _onAddShop(AddShop event, Emitter<ShopState> emit) async {
+  final currentUser = FirebaseAuth.instance.currentUser;
+  if (currentUser != null) {
+    String uid = currentUser.uid;
     try {
-      await firestore.collection('shops').add(event.shop.toMap());
-      add(LoadShops());
+      await firestore.collection('users').doc(uid).collection('shops').add(event.shop.toMap());
+      add(LoadShops());  
     } catch (e) {
       emit(ShopError('Failed to add shop.'));
     }
   }
+}
 
   Future<void> _onEditShop(EditShop event, Emitter<ShopState> emit) async {
     try {
