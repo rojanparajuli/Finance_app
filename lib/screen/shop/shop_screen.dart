@@ -41,9 +41,14 @@ class ShopScreen extends StatelessWidget {
             ),
           ),
         ],
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white), 
+            onPressed: () {
+              Navigator.pop(context);
+            },
+          ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
-      drawer: const Drawer(),
       body: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
           if (state is ShopLoading) {

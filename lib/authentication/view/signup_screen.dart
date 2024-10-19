@@ -61,7 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
             );
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) => const HomeScreen()),
+              MaterialPageRoute(builder: (context) =>  const HomeScreen()),
             );
           } else if (state is GoogleSignUpFailure) {
             ScaffoldMessenger.of(context).showSnackBar(

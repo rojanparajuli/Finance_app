@@ -3,6 +3,8 @@ import 'package:finance/authentication/bloc/forget_password/forget_password_bloc
 import 'package:finance/authentication/bloc/login/login_bloc.dart';
 import 'package:finance/authentication/bloc/login/login_state.dart';
 import 'package:finance/authentication/bloc/sign_up/sign_up_bloc.dart';
+import 'package:finance/bloc/home/home_bloc.dart';
+import 'package:finance/bloc/home/home_event.dart';
 import 'package:finance/bloc/shop/shop_bloc.dart';
 import 'package:finance/bloc/shop/shop_event.dart';
 import 'package:finance/bloc/splash_screen/splash_screen_bloc.dart';
@@ -35,6 +37,8 @@ class MyApp extends StatelessWidget {
         BlocProvider<TransactionBloc>(
           create: (context) => TransactionBloc(firestore),
         ),
+        BlocProvider(
+        create: (context) => QuoteBloc()..add(LoadQuote())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
