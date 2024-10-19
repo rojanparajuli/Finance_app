@@ -37,18 +37,29 @@ class _TransactionScreenState extends State<TransactionScreen> {
           style: GoogleFonts.lora(
             fontSize: 20,
             fontWeight: FontWeight.bold,
+            color: Colors.white
           ),
         ),
-        actions: [
-          IconButton(
-            icon: const Icon(
-              Icons.add,
-              size: 25,
-              color: Colors.black,
-            ),
+         leading: IconButton(
+            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white), 
             onPressed: () {
-              _showTransactionForm(context, widget.shopId);
+              Navigator.pop(context);
             },
+          ),
+        centerTitle: true,
+        actions: [
+          Padding(
+            padding: const EdgeInsets.all(8.0),
+            child: IconButton(
+              icon: const Icon(
+                Icons.add,
+                size: 30,
+                color: Colors.white,
+              ),
+              onPressed: () {
+                _showTransactionForm(context, widget.shopId);
+              },
+            ),
           ),
         ],
       ),
@@ -117,7 +128,6 @@ class _TransactionScreenState extends State<TransactionScreen> {
                     },
                   ),
                 ),
-                // Displaying the grand total
                 Container(
                   padding: const EdgeInsets.all(16.0),
                   decoration: BoxDecoration(
