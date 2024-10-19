@@ -1,6 +1,6 @@
 import 'dart:async';
-import 'package:finance/bloc/splash_screen_event.dart';
-import 'package:finance/bloc/splash_screen_state.dart';
+import 'package:finance/bloc/splash_screen/splash_screen_event.dart';
+import 'package:finance/bloc/splash_screen/splash_screen_state.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
 class SplashBloc extends Bloc<SplashEvent, SplashState> {

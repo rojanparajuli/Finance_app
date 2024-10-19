@@ -1,7 +1,7 @@
 import 'package:finance/authentication/view/login_screen.dart';
-import 'package:finance/bloc/splash_screen_bloc.dart';
-import 'package:finance/bloc/splash_screen_event.dart';
-import 'package:finance/bloc/splash_screen_state.dart';
+import 'package:finance/bloc/splash_screen/splash_screen_bloc.dart';
+import 'package:finance/bloc/splash_screen/splash_screen_event.dart';
+import 'package:finance/bloc/splash_screen/splash_screen_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
