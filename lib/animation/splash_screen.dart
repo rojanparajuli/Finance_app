@@ -28,7 +28,7 @@ class SplashView extends StatelessWidget {
         listener: (context, state) {
           if (state is SplashCompleted) {
             Navigator.of(context).pushReplacement(
-              MaterialPageRoute(builder: (_) => LoginPage()),
+              MaterialPageRoute(builder: (_) => const LoginPage()),
             );
           }
         },

@@ -1,5 +1,6 @@
 import 'package:finance/authentication/bloc/sign_up/sign_up_bloc.dart';
 import 'package:finance/authentication/bloc/sign_up/sign_up_event.dart';
+import 'package:finance/authentication/view/forget_password_view.dart';
 import 'package:finance/authentication/view/signup_screen.dart';
 import 'package:finance/constant/colors.dart';
 import 'package:flutter/gestures.dart';
@@ -18,6 +19,7 @@ class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LoginPageState createState() => _LoginPageState();
 }
 
@@ -30,7 +32,6 @@ class _LoginPageState extends State<LoginPage> {
     super.initState();
     context.read<LoginBloc>().add(GetRememberMe());
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -51,11 +52,10 @@ class _LoginPageState extends State<LoginPage> {
         },
         child: BlocBuilder<LoginBloc, LoginState>(
           builder: (context, state) {
-            
             if (state is LoginLoading) {
               return const Center(child: CircularProgressIndicator());
             }
-            if (state is GetSaveRememberMeSuccess){
+            if (state is GetSaveRememberMeSuccess) {
               _emailController.text = state.email;
               _passwordController.text = state.password;
             }
@@ -124,7 +124,6 @@ class _LoginPageState extends State<LoginPage> {
                             top: 15,
                             child: GestureDetector(
                               onTap: () {
-                                print(state);
                                 if (state is PasswordVisible) {
                                   context
                                       .read<LoginBloc>()
@@ -155,8 +154,7 @@ class _LoginPageState extends State<LoginPage> {
                       final isRemember = state is RememberMeChecked;
                       context
                           .read<LoginBloc>()
-                          .add(LoginSubmitted(email, password, isRemember
-                          ));
+                          .add(LoginSubmitted(email, password, isRemember));
                     },
                     color: Appcolor.primary,
                     text: 'Login',
@@ -178,16 +176,26 @@ class _LoginPageState extends State<LoginPage> {
                           Row(
                             children: [
                               Checkbox(
-                                value: state is RememberMeChecked ? true : false , 
+                                value:
+                                    state is RememberMeChecked ? true : false,
                                 onChanged: (bool? value) {
-
-                                 if (state  is RememberMeChecked){
-                                  context.read<LoginBloc>().add(RememberMeChanged(isRemember: false));
-                                  context.read<LoginBloc>().add(RemoveSavedRememberMe(message: 'Removed'));
-                                 } else {
-                                  context.read<LoginBloc>().add(RememberMeChanged(isRemember: true));
-                                  context.read<LoginBloc>().add(SaveRememberMe(message: 'Saved', email: _emailController.text, password: _passwordController.text));
-                                 }
+                                  if (state is RememberMeChecked) {
+                                    context.read<LoginBloc>().add(
+                                        RememberMeChanged(isRemember: false));
+                                    context.read<LoginBloc>().add(
+                                        RemoveSavedRememberMe(
+                                            message: 'Removed'));
+                                  } else {
+                                    context.read<LoginBloc>().add(
+                                        RememberMeChanged(isRemember: true));
+                                    context
+                                        .read<LoginBloc>()
+                                        .add(SaveRememberMe(
+                                          message: 'Saved',
+                                          email: _emailController.text,
+                                          password: _passwordController.text,
+                                        ));
+                                  }
                                 },
                               ),
                               Text(
@@ -198,6 +206,11 @@ class _LoginPageState extends State<LoginPage> {
                           ),
                           GestureDetector(
                             onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          ForgotPasswordPage()));
                             },
                             child: Text(
                               'Forgot Password?',

@@ -45,7 +45,6 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   }
 
   void mapRememberMeToState(RememberMeChanged event, Emitter<LoginState> emit) {
-    print('calleed');
     if (event.isRemember) {
       emit(RememberMeChecked());
     } else {
@@ -65,7 +64,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
      final password = prefs.getString('password');
 
      if (email != null || password != null){
-      emit(GetSaveRememberMeSuccess(email: email ?? '', password: password ?? ''));
+      emit(GetSaveRememberMeSuccess(email: email ?? '', password: password ?? '',));
       
      }
 

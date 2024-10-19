@@ -1,4 +1,5 @@
 import 'package:finance/animation/splash_screen.dart';
+import 'package:finance/authentication/bloc/forget_password/forget_password_bloc.dart';
 import 'package:finance/authentication/bloc/login/login_bloc.dart';
 import 'package:finance/authentication/bloc/sign_up/sign_up_bloc.dart';
 import 'package:finance/bloc/splash_screen_bloc.dart';
@@ -19,6 +20,8 @@ class MyApp extends StatelessWidget {
         ),
         BlocProvider(create: (context) => LoginBloc(FirebaseAuth.instance)),
         BlocProvider(create: (context) => SignUpBloc(FirebaseAuth.instance)),
+        BlocProvider(
+      create: (context) => ForgotPasswordBloc(FirebaseAuth.instance)),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
