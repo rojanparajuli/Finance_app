@@ -1,120 +1,71 @@
-import 'package:finance/authentication/bloc/login/login_bloc.dart';
-import 'package:finance/authentication/bloc/login/login_state.dart';
+import 'package:finance/authentication/bloc/forget_password/forget_password_bloc.dart';
+import 'package:finance/authentication/bloc/forget_password/forget_password_event.dart';
+import 'package:finance/authentication/bloc/forget_password/forget_password_state.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:lottie/lottie.dart';
+import 'package:google_fonts/google_fonts.dart';
 
-class ForgotPasswordScreen extends StatelessWidget {
-  final TextEditingController _usernameController = TextEditingController();
+class ForgotPasswordPage extends StatelessWidget {
+  final TextEditingController _emailController = TextEditingController();
 
-  ForgotPasswordScreen({super.key});
+  ForgotPasswordPage({super.key});
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 16.0),
-        child: Column(
-          children: [
-            const Spacer(flex: 2),
-            Image.asset(
-              'assets/3ba8f-mega.png',
-              height: 200,
-            ),
-            const SizedBox(height: 20),
-            _buildUsernameField(),
-            const SizedBox(height: 20),
-            _buildLoginButton(context),
-            const SizedBox(height: 20),
-            _buildLoadingAnimation(),
-            const Spacer(flex: 3),
-          ],
-        ),
-      ),
-    );
-  }
-
-  TextFormField _buildUsernameField() {
-    return TextFormField(
-      controller: _usernameController,
-      decoration: InputDecoration(
-        labelText: 'Email',
-        border: OutlineInputBorder(
-          borderRadius: BorderRadius.circular(12),
-          borderSide: const BorderSide(color: Colors.grey),
-        ),
-        filled: true,
-        fillColor: Colors.transparent,
-        contentPadding:
-            const EdgeInsets.symmetric(vertical: 16, horizontal: 12),
-      ),
-      validator: (value) {
-        if (value == null || value.isEmpty) {
-          return 'Please enter your Email Address';
-        }
-        return null;
-      },
-    );
-  }
-
-  SizedBox _buildLoginButton(BuildContext context) {
-    return SizedBox(
-      width: double.infinity,
-      child: BlocBuilder<LoginBloc, LoginState>(
-        builder: (context, state) {
-          bool isLoading = state is LoginLoading;
-          return Container(
-            decoration: BoxDecoration(
-              gradient: const LinearGradient(
-                colors: [Colors.blue, Colors.red],
-                begin: Alignment.centerLeft,
-                end: Alignment.centerRight,
-              ),
-              borderRadius: BorderRadius.circular(12),
-            ),
-            child: ElevatedButton(
-              style: ElevatedButton.styleFrom(
-                backgroundColor: Colors.transparent,
-                padding: const EdgeInsets.symmetric(vertical: 15),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(12),
-                ),
-              ),
-              onPressed: isLoading
-                  ? null
-                  : () {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text('Request sent successfully'),
-                        ),
-                      );
-                    },
-              child: isLoading
-                  ? const CircularProgressIndicator(
-                      color: Colors.white,
-                    )
-                  : const Text(
-                      'Send Reset Email',
-                      style: TextStyle(color: Colors.white, fontSize: 18),
-                    ),
-            ),
-          );
+      appBar: AppBar(title: Text('Forgot Password', style: GoogleFonts.lora())),
+      body: BlocListener<ForgotPasswordBloc, ForgotPasswordState>(
+        listener: (context, state) {
+          if (state is ForgotPasswordSuccess) {
+            ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+              content: Text('Password reset email sent!'),
+            ));
+          } else if (state is ForgotPasswordFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(SnackBar(
+              content: Text(state.error),
+            ));
+          }
         },
+        child: Padding(
+          padding: const EdgeInsets.all(16.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.stretch,
+            children: [
+              Text(
+                'Enter your email to receive a password reset link:',
+                style: GoogleFonts.lora(fontSize: 18),
+              ),
+              const SizedBox(height: 16.0),
+              TextField(
+                controller: _emailController,
+                decoration: const InputDecoration(labelText: 'Email'),
+                style: GoogleFonts.lora(),
+              ),
+              const SizedBox(height: 16.0),
+              BlocBuilder<ForgotPasswordBloc, ForgotPasswordState>(
+                builder: (context, state) {
+                  if (state is ForgotPasswordLoading) {
+                    return const Center(child: CircularProgressIndicator());
+                  }
+                  return ElevatedButton(
+                    onPressed: () {
+                      final email = _emailController.text.trim();
+                      if (email.isNotEmpty) {
+                        BlocProvider.of<ForgotPasswordBloc>(context)
+                            .add(ForgotPasswordEmailSubmitted(email));
+                      }
+                    },
+                    child: Text(
+                      'Send Reset Link',
+                      style: GoogleFonts.lora(),
+                    ),
+                  );
+                },
+              ),
+            ],
+          ),
+        ),
       ),
-    );
-  }
-
-  Widget _buildLoadingAnimation() {
-    return BlocBuilder<LoginBloc, LoginState>(
-      builder: (context, state) {
-        if (state is LoginLoading) {
-          return Lottie.asset(
-            'assets/animation.json',
-            height: 100,
-          );
-        }
-        return Container();
-      },
     );
   }
 }
