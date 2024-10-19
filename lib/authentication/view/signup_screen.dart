@@ -47,7 +47,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 backgroundColor: Colors.green,
               ),
             );
-            Navigator.pop(context); // Pop the current page for manual sign-up
+            Navigator.pop(context); 
           } else if (state is SignUpFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Error: ${state.error}')),
