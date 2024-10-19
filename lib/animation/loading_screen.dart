@@ -1,3 +1,4 @@
+import 'package:finance/animation/widget/shimmer_loading.dart';
 import 'package:finance/constant/colors.dart';
 import 'package:flutter/material.dart';
 
@@ -14,42 +15,11 @@ class LoadingScreen extends StatelessWidget {
       body: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListView.builder(
-          itemCount: 8,
+          itemCount: 8, // Number of shimmer cards
           itemBuilder: (context, index) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(vertical: 10),
-              child: Card(
-                elevation: 4,
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10),
-                ),
-                child: const ListTile(
-                  leading: CircleAvatar(
-                    radius: 20,
-                    backgroundColor: Colors.grey,
-                  ),
-                  title: SizedBox(
-                    height: 16,
-                    width: 100,
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.all(Radius.circular(4)),
-                      ),
-                    ),
-                  ),
-                  subtitle: SizedBox(
-                    height: 14,
-                    width: 60,
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: Colors.grey,
-                        borderRadius: BorderRadius.all(Radius.circular(4)),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
+            return const Padding(
+              padding: EdgeInsets.symmetric(vertical: 10),
+              child: ShimmerLoadingCard(),
             );
           },
         ),
