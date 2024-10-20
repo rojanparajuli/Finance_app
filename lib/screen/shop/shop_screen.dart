@@ -1,3 +1,4 @@
+import 'package:finance/animation/loading_screen.dart';
 import 'package:finance/bloc/shop/shop_bloc.dart';
 import 'package:finance/bloc/shop/shop_event.dart';
 import 'package:finance/bloc/shop/shop_state.dart';
@@ -41,18 +42,18 @@ class ShopScreen extends StatelessWidget {
             ),
           ),
         ],
-          leading: IconButton(
-            icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white), 
-            onPressed: () {
-              Navigator.pop(context);
-            },
-          ),
+        leading: IconButton(
+          icon: const Icon(Icons.arrow_back_ios_new, color: Colors.white),
+          onPressed: () {
+            Navigator.pop(context);
+          },
+        ),
         iconTheme: const IconThemeData(color: Colors.white),
       ),
       body: BlocBuilder<ShopBloc, ShopState>(
         builder: (context, state) {
           if (state is ShopLoading) {
-            return const Center(child: CircularProgressIndicator());
+            return const Center(child: LoadingScreen());
           } else if (state is ShopLoaded) {
             final shops = state.shops;
             if (shops.isEmpty) {

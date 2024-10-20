@@ -28,3 +28,4 @@ class DeleteTransaction extends TransactionEvent {
 
   DeleteTransaction(this.shopId, this.transactionId);
 }
+
