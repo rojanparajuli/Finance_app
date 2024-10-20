@@ -12,6 +12,7 @@ class TransactionBloc extends Bloc<TransactionEvent, TransactionState> {
     on<AddTransaction>(_onAddTransaction);
     on<EditTransaction>(_onEditTransaction);
     on<DeleteTransaction>(_onDeleteTransaction);
+    
   }
 
   Future<void> _onLoadTransactions(
