@@ -15,6 +15,7 @@ import 'package:getwidget/components/text_field/gf_text_field.dart';
 import 'package:getwidget/shape/gf_button_shape.dart';
 import 'package:getwidget/size/gf_size.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:lottie/lottie.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -63,7 +64,10 @@ class _LoginPageState extends State<LoginPage> {
         child: BlocBuilder<LoginBloc, LoginState>(
           builder: (context, state) {
             if (state is LoginLoading) {
-              return const Center(child: CircularProgressIndicator());
+              return  Center(child: SizedBox(
+                height: 200,
+                width: 200,
+                child: Lottie.asset('assets/animation.json')));
             }
             if (state is GetSaveRememberMeSuccess) {
               _emailController.text = state.email;
