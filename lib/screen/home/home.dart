@@ -24,42 +24,46 @@ class HomeScreen extends StatelessWidget {
       ),
       drawer: const Drawer(),
       body: BlocBuilder<QuoteBloc, QuoteState>(
-        builder: (context, state) {
-          if (state is QuoteInitial) {
-            return const Center(child: LoadingScreen());
-          } else if (state is QuoteLoaded) {
-            return Column(
-              children: [
-                Center(
-                  child: Padding(
-                    padding: const EdgeInsets.all(16.0),
-                    child: Text(
-                      state.quote,
-                      style: GoogleFonts.lora(fontSize: 24, fontStyle: FontStyle.italic),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                ),
-                ElevatedButton(
-                  onPressed: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => const ShopScreen()),
-                    );
-                  },
-                  child: Text(
-                    'Add Shop',
-                    style: GoogleFonts.lora(),
-                  ),
-                ),
-              ],
-            );
-          }
-          return Center(
-            child: Text('Error loading quote', style: GoogleFonts.lora()),
-          );
-        },
-      ),
+  builder: (context, state) {
+    if (state is QuoteInitial) {
+      print("State: QuoteInitial");
+      return const Center(child: LoadingScreen());
+    } else if (state is QuoteLoaded) {
+      print("State: QuoteLoaded - Quote: ${state.quote}");
+      return Column(
+        children: [
+          Center(
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: Text(
+                state.quote,
+                style: GoogleFonts.lora(fontSize: 24, fontStyle: FontStyle.italic),
+                textAlign: TextAlign.center,
+              ),
+            ),
+          ),
+          ElevatedButton(
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute(builder: (context) => const ShopScreen()),
+              );
+            },
+            child: Text(
+              'Add Shop',
+              style: GoogleFonts.lora(),
+            ),
+          ),
+        ],
+      );
+    } else {
+      return Center(
+        child: Text('Error loading quote', style: GoogleFonts.lora()),
+      );
+    }
+  },
+),
+
     );
   }
 }
