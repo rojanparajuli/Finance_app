@@ -43,18 +43,14 @@ class _LoginPageState extends State<LoginPage> {
       body: BlocListener<LoginBloc, LoginState>(
         listener: (context, state) {
           if (state is LoginSuccess) {
-            ScaffoldMessenger.of(context)
-                .showSnackBar(
-                  const SnackBar(content: Text('Login successful!')),
-                )
-                .closed
-                .then((_) {
-              Navigator.push(
-                // ignore: use_build_context_synchronously
-                context,
-                MaterialPageRoute(builder: (context) =>  const HomeScreen()),
-              );
-            });
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Login successful!')),
+            );
+            Navigator.push(
+              // ignore: use_build_context_synchronously
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
           } else if (state is LoginFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Error: ${state.error}')),
@@ -64,10 +60,11 @@ class _LoginPageState extends State<LoginPage> {
         child: BlocBuilder<LoginBloc, LoginState>(
           builder: (context, state) {
             if (state is LoginLoading) {
-              return  Center(child: SizedBox(
-                height: 200,
-                width: 200,
-                child: Lottie.asset('assets/animation.json')));
+              return Center(
+                  child: SizedBox(
+                      height: 200,
+                      width: 200,
+                      child: Lottie.asset('assets/animation.json')));
             }
             if (state is GetSaveRememberMeSuccess) {
               _emailController.text = state.email;
