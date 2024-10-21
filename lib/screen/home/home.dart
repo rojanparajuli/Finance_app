@@ -57,10 +57,8 @@ class HomeScreen extends StatelessWidget {
       body: BlocBuilder<QuoteBloc, QuoteState>(
         builder: (context, state) {
           if (state is QuoteInitial) {
-            print("State: QuoteInitial");
             return const Center(child: LoadingScreen());
           } else if (state is QuoteLoaded) {
-            print("State: QuoteLoaded - Quote: ${state.quote}");
             return Padding(
               padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
               child: Column(
