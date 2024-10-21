@@ -27,12 +27,11 @@ Future<void> _loadQuotes() async {
 
     if (data['quotes'] is List) {
       quotes.addAll(data['quotes'].map<String>((q) => q['quote'] as String).toList());
-      print("Quotes loaded: ${quotes.length}");
     } else {
-      print("Quotes data not in expected format.");
     }
+  // ignore: empty_catches
   } catch (e) {
-    print("Error loading quotes: $e");
+   
   }
 }
 

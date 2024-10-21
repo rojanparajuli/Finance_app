@@ -3,6 +3,8 @@ import 'package:finance/authentication/bloc/forget_password/forget_password_bloc
 import 'package:finance/authentication/bloc/login/login_bloc.dart';
 import 'package:finance/authentication/bloc/login/login_state.dart';
 import 'package:finance/authentication/bloc/sign_up/sign_up_bloc.dart';
+import 'package:finance/authentication/token/bloc/token_manager_bloc.dart';
+import 'package:finance/authentication/token/bloc/token_manager_event.dart';
 import 'package:finance/bloc/home/home_bloc.dart';
 import 'package:finance/bloc/home/home_event.dart';
 import 'package:finance/bloc/shop/shop_bloc.dart';
@@ -30,15 +32,16 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => LoginBloc(FirebaseAuth.instance)),
         BlocProvider(create: (context) => SignUpBloc(FirebaseAuth.instance)),
         BlocProvider(
-          create: (context) => ForgotPasswordBloc(FirebaseAuth.instance)),
+            create: (context) => ForgotPasswordBloc(FirebaseAuth.instance)),
         BlocProvider<ShopBloc>(
           create: (context) => ShopBloc(firestore)..add(LoadShops()),
         ),
         BlocProvider<TransactionBloc>(
           create: (context) => TransactionBloc(firestore),
         ),
+        BlocProvider(create: (context) => QuoteBloc()..add(LoadQuote())),
         BlocProvider(
-        create: (context) => QuoteBloc()..add(LoadQuote())),
+      create: (context) => TokenBloc()..add(GetToken()))
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
