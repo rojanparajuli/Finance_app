@@ -37,7 +37,7 @@ class SplashView extends StatelessWidget {
             builder: (context, state) {
               return AnimatedOpacity(
                 opacity: state is SplashLoading ? 1.0 : 0.0,
-                duration: const Duration(seconds: 2),
+                duration: const Duration(seconds: 1),
                 child: Image.asset('assets/Firebase.png'),
               );
             },
