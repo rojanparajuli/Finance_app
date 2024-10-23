@@ -180,29 +180,30 @@ class HomeScreen extends StatelessWidget {
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
-                          Center(
-                            child: Container(
-                              alignment: Alignment.center,
-                              height: 380,
-                              width: double.infinity,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(16.0),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color: Colors.black.withOpacity(0.1),
-                                    blurRadius: 10.0,
-                                    spreadRadius: 3.0,
+                          Row(
+                            children: [
+                              Expanded(
+                                // Wrap with Expanded
+                                child: Container(
+                                  alignment: Alignment.center,
+                                  height: 380,
+                                  decoration: BoxDecoration(
+                                    borderRadius: BorderRadius.circular(16.0),
+                                    boxShadow: [
+                                      BoxShadow(
+                                        color: Colors.black.withOpacity(0.1),
+                                        blurRadius: 10.0,
+                                        spreadRadius: 3.0,
+                                      ),
+                                    ],
                                   ),
-                                ],
+                                  child: const HtmlWidget("""
+              <iframe src="https://www.hamropatro.com/widgets/calender-full.php" frameborder="0" scrolling="no" marginwidth="0" marginheight="0"
+              style="border:none; overflow:hidden; width:850px !important; " allowtransparency="true"></iframe>
+              """),
+                                ),
                               ),
-                              child: const HtmlWidget(
-                                // baseUrl: Uri(path: 'https://www.hamropatro.com/widgets/calender-full.php'),
-                              """
-                                   <iframe src="https://www.hamropatro.com/widgets/calender-full.php" frameborder="0" scrolling="no" marginwidth="0" marginheight="0"
-                 style="border:none; overflow:hidden; width:850px !important; " allowtransparency="true"></iframe>
-                 """
-                              ),
-                            ),
+                            ],
                           ),
                         ],
                       ),
