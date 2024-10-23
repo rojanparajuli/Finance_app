@@ -14,6 +14,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
     on<SaveRememberMe>(_onSaveRememberMe);
     on<RemoveSavedRememberMe>(_onRemoveSavedRememberMe);
     on<GetRememberMe>(_onGetRememberMe);
+    
   }
 
   Future<void> mapEventToState(LoginSubmitted event, Emitter<LoginState> emit) async {
@@ -67,6 +68,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
       emit(GetSaveRememberMeSuccess(email: email ?? '', password: password ?? '',));
       
      }
+
 
   }
 
