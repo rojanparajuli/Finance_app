@@ -1,12 +1,14 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finance/animation/loading_screen.dart';
 import 'package:finance/bloc/home/home_bloc.dart';
 import 'package:finance/bloc/home/home_state.dart';
 import 'package:finance/constant/colors.dart';
 import 'package:finance/screen/shop/shop_screen.dart';
 import 'package:finance/widget/drawer_items.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:getwidget/getwidget.dart';
+import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
@@ -14,14 +16,14 @@ class HomeScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.grey[100], // Light background color
+      backgroundColor: Colors.grey[100],
       appBar: AppBar(
         backgroundColor: Appcolor.primary,
         title: Text(
           'Dashboard',
           style: GoogleFonts.lora(
             color: Colors.white,
-            fontSize: 22, // Larger title font for better readability
+            fontSize: 22,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -32,7 +34,6 @@ class HomeScreen extends StatelessWidget {
             padding: const EdgeInsets.all(8.0),
             child: IconButton(
               onPressed: () {
-                // Add a Snackbar for notification click
                 ScaffoldMessenger.of(context).showSnackBar(
                   SnackBar(
                     content: Text(
@@ -54,92 +55,174 @@ class HomeScreen extends StatelessWidget {
       drawer: const Drawer(
         child: DrawerItem(),
       ),
-      body: BlocBuilder<QuoteBloc, QuoteState>(
-        builder: (context, state) {
-          if (state is QuoteInitial) {
-            return const Center(child: LoadingScreen());
-          } else if (state is QuoteLoaded) {
-            return Padding(
-              padding: const EdgeInsets.symmetric(horizontal: 16.0, vertical: 24.0),
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  // Add some spacing and formatting to the quote section
-                  Container(
-                    padding: const EdgeInsets.all(16.0),
-                    decoration: BoxDecoration(
-                      color: Colors.white,
-                      borderRadius: BorderRadius.circular(12.0),
-                      boxShadow: [
-                        BoxShadow(
-                          color: Colors.black.withOpacity(0.1),
-                          blurRadius: 8.0,
-                          spreadRadius: 2.0,
-                        ),
-                      ],
-                    ),
-                    child: Text(
-                      state.quote,
-                      style: GoogleFonts.lora(
-                        fontSize: 24,
-                        fontStyle: FontStyle.italic,
-                        color: Colors.black87,
-                      ),
-                      textAlign: TextAlign.center,
-                    ),
-                  ),
-                  const SizedBox(height: 20.0),
-                  Divider(color: Colors.grey[300]),
-                  const SizedBox(height: 20.0),
-                  // Add a call-to-action button with better styling
-                  ElevatedButton(
-                    onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => const ShopScreen(),
-                        ),
-                      );
-                    },
-                    style: ElevatedButton.styleFrom(
-                      backgroundColor: Appcolor.primary,
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 32.0,
-                        vertical: 16.0,
-                      ),
-                      shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(12.0),
-                      ),
-                    ),
-                    child: Row(
-                      children: [
-                        const Icon(Icons.shopping_bag),
-                        Text(
-                           'Shops',
-                          style: GoogleFonts.lora(
-                            fontSize: 18,
-                            fontWeight: FontWeight.bold,
-                            color: Colors.white,
+      body: Container(
+        decoration: BoxDecoration(
+          gradient: LinearGradient(
+            begin: Alignment.topCenter,
+            end: Alignment.bottomCenter,
+            colors: [
+              Colors.grey[100]!,
+              Colors.grey[300]!,
+            ],
+          ),
+        ),
+        child: BlocBuilder<QuoteBloc, QuoteState>(
+          builder: (context, state) {
+            if (state is QuoteInitial) {
+              return const Center(child: LoadingScreen());
+            } else if (state is QuoteLoaded) {
+              return Padding(
+                padding: const EdgeInsets.symmetric(
+                    horizontal: 16.0, vertical: 24.0),
+                child: SingleChildScrollView(
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    children: [
+                      Container(
+                        padding: const EdgeInsets.all(20.0),
+                        decoration: BoxDecoration(
+                          gradient: LinearGradient(
+                            colors: [
+                              Colors.white,
+                              Colors.grey[100]!,
+                            ],
+                            begin: Alignment.topLeft,
+                            end: Alignment.bottomRight,
                           ),
+                          borderRadius: BorderRadius.circular(16.0),
+                          boxShadow: [
+                            BoxShadow(
+                              color: Colors.black.withOpacity(0.1),
+                              blurRadius: 10.0,
+                              spreadRadius: 3.0,
+                            ),
+                          ],
                         ),
-                      ],
-                    ),
+                        child: Text(
+                          state.quote,
+                          style: GoogleFonts.lora(
+                            fontSize: 24,
+                            fontStyle: FontStyle.italic,
+                            color: Colors.black87,
+                          ),
+                          textAlign: TextAlign.center,
+                        ),
+                      ),
+                      const SizedBox(height: 30),
+                      Divider(color: Colors.grey[400], thickness: 1),
+                      const SizedBox(height: 30),
+                      GridView.count(
+                        shrinkWrap: true,
+                        crossAxisCount: 3,
+                        crossAxisSpacing: 8,
+                        mainAxisSpacing: 8,
+                        children: [
+                          GFButton(
+                            onPressed: () {
+                              Navigator.push(
+                                context,
+                                MaterialPageRoute(
+                                  builder: (context) => const ShopScreen(),
+                                ),
+                              );
+                            },
+                            text: "Shops",
+                            icon: const Icon(Icons.shopping_bag,
+                                color: Colors.white, size: 16),
+                            color: Appcolor.primary,
+                            shape: GFButtonShape.standard,
+                            size: GFSize.SMALL,
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 8),
+                            textStyle: GoogleFonts.lora(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          GFButton(
+                            onPressed: () {},
+                            text: "Lending",
+                            icon: const Icon(Icons.person,
+                                color: Colors.white, size: 16),
+                            color: Appcolor.primary,
+                            shape: GFButtonShape.standard,
+                            size: GFSize.SMALL,
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 8),
+                            textStyle: GoogleFonts.lora(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                          GFButton(
+                            onPressed: () {},
+                            text: "Calculator",
+                            icon: const Icon(Icons.calculate,
+                                color: Colors.white, size: 16),
+                            color: Appcolor.primary,
+                            shape: GFButtonShape.standard,
+                            size: GFSize.SMALL,
+                            padding: const EdgeInsets.symmetric(
+                                vertical: 6, horizontal: 8),
+                            textStyle: GoogleFonts.lora(
+                              fontSize: 14,
+                              color: Colors.white,
+                              fontWeight: FontWeight.w600,
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(
+                        height: 20,
+                      ),
+                      Column(
+                        crossAxisAlignment: CrossAxisAlignment.center,
+                        children: [
+                          Center(
+                            child: Container(
+                              alignment: Alignment.center,
+                              height: 380,
+                              width: double.infinity,
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(16.0),
+                                boxShadow: [
+                                  BoxShadow(
+                                    color: Colors.black.withOpacity(0.1),
+                                    blurRadius: 10.0,
+                                    spreadRadius: 3.0,
+                                  ),
+                                ],
+                              ),
+                              child: const HtmlWidget(
+                                // baseUrl: Uri(path: 'https://www.hamropatro.com/widgets/calender-full.php'),
+                              """
+                                   <iframe src="https://www.hamropatro.com/widgets/calender-full.php" frameborder="0" scrolling="no" marginwidth="0" marginheight="0"
+                 style="border:none; overflow:hidden; width:850px !important; " allowtransparency="true"></iframe>
+                 """
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            );
-          } else {
-            return Center(
-              child: Text(
-                'Error loading quote',
-                style: GoogleFonts.lora(
-                  fontSize: 18,
-                  color: Colors.red,
                 ),
-              ),
-            );
-          }
-        },
+              );
+            } else {
+              return Center(
+                child: Text(
+                  'Error loading quote',
+                  style: GoogleFonts.lora(
+                    fontSize: 18,
+                    color: Colors.red,
+                  ),
+                ),
+              );
+            }
+          },
+        ),
       ),
     );
   }
