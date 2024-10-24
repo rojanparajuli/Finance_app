@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -15,6 +16,11 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           email: event.email,
           password: event.password,
         );
+        FirebaseFirestore.instance.collection('users').doc(_firebaseAuth.currentUser?.uid).set({
+          'email': event.email,
+          'name': event.fullName
+        });
+
         emit(SignUpSuccess());
       } catch (e) {
         emit(SignUpFailure(error: e.toString()));
@@ -46,5 +52,8 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     on<ToggleTermsAccepted>((event, emit) {
       emit(SignUpFormUpdated(termsAccepted: event.isAccepted));
     });
+
+      
+
   }
 }

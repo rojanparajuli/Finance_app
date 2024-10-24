@@ -10,7 +10,6 @@ class LendingBloc extends Bloc<LendingEvent, LendingState> {
   final FirebaseFirestore firestore;
 
   LendingBloc(this.firestore) : super(LendingInitial()) {
-    // Register event handlers
     on<LoadLendingsEvent>((event, emit) async {
       emit(LendingLoading());
       try {
@@ -25,31 +24,28 @@ class LendingBloc extends Bloc<LendingEvent, LendingState> {
     });
 
     on<AddLendingEvent>((event, emit) async {
-      // Add lending to Firestore
       await firestore.collection('lendings').add({
         'name': event.name,
         'amount': event.amount,
         'promisedDate': event.promisedDate,
         'returnDate': event.returnDate,
       });
-      add(LoadLendingsEvent()); // Reload lendings
+      add(LoadLendingsEvent()); 
     });
 
     on<EditLendingEvent>((event, emit) async {
-      // Edit lending in Firestore
       await firestore.collection('lendings').doc(event.lending.id).update({
         'name': event.lending.name,
         'amount': event.lending.amount,
         'promisedDate': event.lending.promisedDate,
         'returnDate': event.lending.returnDate,
       });
-      add(LoadLendingsEvent()); // Reload lendings
+      add(LoadLendingsEvent()); 
     });
 
     on<DeleteLendingEvent>((event, emit) async {
-      // Delete lending from Firestore
       await firestore.collection('lendings').doc(event.id).delete();
-      add(LoadLendingsEvent()); // Reload lendings
+      add(LoadLendingsEvent()); 
     });
   }
 }
