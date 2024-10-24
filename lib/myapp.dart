@@ -17,7 +17,9 @@ import 'package:finance/bloc/shop/shop_bloc.dart';
 import 'package:finance/bloc/shop/shop_event.dart';
 import 'package:finance/bloc/splash_screen/splash_screen_bloc.dart';
 import 'package:finance/bloc/splash_screen/splash_screen_event.dart';
+import 'package:finance/bloc/support_page/support_page_bloc.dart';
 import 'package:finance/bloc/trasnsection/transection_bloc.dart';
+import 'package:finance/repository/message_repository.dart';
 import 'package:finance/screen/home/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -56,6 +58,8 @@ class MyApp extends StatelessWidget {
           create: (context) => ProfileBloc(firestore)..add(LoadProfile()),
         ),
         BlocProvider(create: (context) => PasswordBloc()),
+        BlocProvider(
+        create: (context) => MessageBloc(MessageRepository()))
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
