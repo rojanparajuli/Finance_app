@@ -8,6 +8,8 @@ import 'package:finance/authentication/token/bloc/token_manager_event.dart';
 import 'package:finance/bloc/calculator/calculator_bloc.dart';
 import 'package:finance/bloc/home/home_bloc.dart';
 import 'package:finance/bloc/home/home_event.dart';
+import 'package:finance/bloc/lending/lending_bloc.dart';
+import 'package:finance/bloc/lending/lending_event.dart';
 import 'package:finance/bloc/shop/shop_bloc.dart';
 import 'package:finance/bloc/shop/shop_event.dart';
 import 'package:finance/bloc/splash_screen/splash_screen_bloc.dart';
@@ -43,6 +45,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => QuoteBloc()..add(LoadQuote())),
         BlocProvider(create: (context) => TokenBloc()..add(GetToken())),
         BlocProvider(create: (context) => CalculatorBloc()),
+       BlocProvider(
+      create: (context) => LendingBloc(FirebaseFirestore.instance)
+        ..add(LoadLendingsEvent())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

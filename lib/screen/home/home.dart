@@ -1,4 +1,5 @@
 import 'package:finance/screen/calculator/calculator_screen.dart';
+import 'package:finance/screen/lending/lending_list.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finance/animation/loading_screen.dart';
@@ -142,7 +143,9 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
                           GFButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=> const LendingListPage()));
+                            },
                             text: "Lending",
                             icon: const Icon(Icons.person,
                                 color: Colors.white, size: 16),
@@ -159,7 +162,11 @@ class HomeScreen extends StatelessWidget {
                           ),
                           GFButton(
                             onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=>  CalculatorScreen()));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const CalculatorScreen()));
                             },
                             text: "Calculator",
                             icon: const Icon(Icons.calculate,
@@ -180,6 +187,9 @@ class HomeScreen extends StatelessWidget {
                       const SizedBox(
                         height: 20,
                       ),
+                      const Divider(
+                        color: Colors.black,
+                      ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.center,
                         children: [
@@ -188,7 +198,7 @@ class HomeScreen extends StatelessWidget {
                               Expanded(
                                 child: Container(
                                   alignment: Alignment.center,
-                                  height: 380,
+                                  height: 300,
                                   decoration: BoxDecoration(
                                     borderRadius: BorderRadius.circular(16.0),
                                     boxShadow: [
@@ -210,6 +220,12 @@ class HomeScreen extends StatelessWidget {
                             ],
                           ),
                         ],
+                      ),
+                      const Divider(
+                        color: Colors.black,
+                      ),
+                      const SizedBox(
+                        height: 10,
                       ),
                     ],
                   ),
