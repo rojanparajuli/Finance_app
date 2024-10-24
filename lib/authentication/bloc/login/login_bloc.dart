@@ -72,13 +72,17 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
 
   }
 
-
-
   Future<void>  _onRemoveSavedRememberMe (RemoveSavedRememberMe event, Emitter<LoginState> emit) async {
 
       final prefs = await SharedPreferences.getInstance();
      prefs.remove('email');
       prefs.remove('password');
+
+  }
+
+  Future<String> getUserId() async {
+    final uid = _firebaseAuth.currentUser!.uid;
+    return uid;
 
   }
   

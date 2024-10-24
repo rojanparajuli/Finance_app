@@ -10,6 +10,7 @@ import 'package:finance/bloc/home/home_bloc.dart';
 import 'package:finance/bloc/home/home_event.dart';
 import 'package:finance/bloc/lending/lending_bloc.dart';
 import 'package:finance/bloc/lending/lending_event.dart';
+import 'package:finance/bloc/proile/profile_bloc.dart';
 import 'package:finance/bloc/shop/shop_bloc.dart';
 import 'package:finance/bloc/shop/shop_event.dart';
 import 'package:finance/bloc/splash_screen/splash_screen_bloc.dart';
@@ -48,6 +49,9 @@ class MyApp extends StatelessWidget {
        BlocProvider(
       create: (context) => LendingBloc(FirebaseFirestore.instance)
         ..add(LoadLendingsEvent())),
+         BlocProvider<ProfileBloc>(
+          create: (context) => ProfileBloc(firestore),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

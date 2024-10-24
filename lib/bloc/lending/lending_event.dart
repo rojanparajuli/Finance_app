@@ -40,7 +40,7 @@ class EditLendingEvent extends LendingEvent {
 class DeleteLendingEvent extends LendingEvent {
   final String id;
 
-  DeleteLendingEvent(this.id);
+  const DeleteLendingEvent(this.id);
 
   @override
   List<Object> get props => [id];

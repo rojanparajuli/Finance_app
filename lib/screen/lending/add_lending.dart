@@ -9,9 +9,10 @@ import 'package:google_fonts/google_fonts.dart';
 class LendingAddPage extends StatefulWidget {
   final Lending? lending; // Optional parameter for editing
 
-  LendingAddPage({this.lending});
+  const LendingAddPage({super.key, this.lending});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LendingAddPageState createState() => _LendingAddPageState();
 }
 
@@ -47,8 +48,6 @@ class _LendingAddPageState extends State<LendingAddPage> {
       } else {
         _returnDate = picked;
       }
-      // This setState is necessary for UI update; consider another state management approach if needed
-      setState(() {});
     }
   }
 

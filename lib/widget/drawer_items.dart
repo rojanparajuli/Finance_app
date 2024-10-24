@@ -1,10 +1,30 @@
+import 'package:finance/authentication/bloc/login/login_bloc.dart';
 import 'package:finance/constant/colors.dart';
+import 'package:finance/screen/profile/profile_screen.dart';
 import 'package:finance/widget/responsive.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
 
-class DrawerItem extends StatelessWidget {
+class DrawerItem extends StatefulWidget {
   const DrawerItem({super.key});
+
+  @override
+  State<DrawerItem> createState() => _DrawerItemState();
+}
+
+class _DrawerItemState extends State<DrawerItem> {
+  late String userId;
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchUserId();
+  }
+
+  void _fetchUserId() async {
+    userId = await context.read<LoginBloc>().getUserId();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +41,7 @@ class DrawerItem extends StatelessWidget {
               style: GoogleFonts.lora(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
-                color: Colors.white,
+                color: Colors.black, // Changed to black for visibility
               ),
             ),
             const SizedBox(height: 20),
@@ -46,7 +66,14 @@ class DrawerItem extends StatelessWidget {
           context,
           icon: Icons.person,
           title: 'Profile',
-          onTap: () {},
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ProfileScreen(userId: userId),
+              ),
+            );
+          },
         ),
         _buildMenuItem(
           context,
