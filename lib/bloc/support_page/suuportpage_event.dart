@@ -6,11 +6,11 @@ abstract class MessageEvent extends Equatable {
 }
 
 class SendMessage extends MessageEvent {
-  final String email;
+  final String user;
   final String content;
 
-  SendMessage({required this.email, required this.content});
+  SendMessage({required this.user, required this.content});
 
   @override
-  List<Object?> get props => [email, content];
+  List<Object?> get props => [user, content];
 }

@@ -4,23 +4,19 @@ import 'package:finance/model/support/support_model.dart';
 import 'package:finance/repository/message_repository.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-
 class MessageBloc extends Bloc<MessageEvent, MessageState> {
   final MessageRepository repository;
 
-  MessageBloc(this.repository) : super(MessageInitial());
-
-  @override
-  Stream<MessageState> mapEventToState(MessageEvent event) async* {
-    if (event is SendMessage) {
-      yield MessageSending();
+  MessageBloc(this.repository) : super(MessageInitial()) {
+    on<SendMessage>((event, emit) async {
+      emit(MessageSending());
       try {
-        final message = Message(email: event.email, content: event.content);
+        final message = Message(email: event.user, content: event.content);
         await repository.sendMessage(message);
-        yield MessageSent();
+        emit(MessageSent());
       } catch (e) {
-        yield MessageError(e.toString());
+        emit(MessageError(e.toString()));
       }
-    }
+    });
   }
 }
