@@ -11,11 +11,13 @@ import 'package:finance/bloc/home/home_event.dart';
 import 'package:finance/bloc/lending/lending_bloc.dart';
 import 'package:finance/bloc/lending/lending_event.dart';
 import 'package:finance/bloc/proile/profile_bloc.dart';
+import 'package:finance/bloc/proile/profile_event.dart';
 import 'package:finance/bloc/shop/shop_bloc.dart';
 import 'package:finance/bloc/shop/shop_event.dart';
 import 'package:finance/bloc/splash_screen/splash_screen_bloc.dart';
 import 'package:finance/bloc/splash_screen/splash_screen_event.dart';
 import 'package:finance/bloc/trasnsection/transection_bloc.dart';
+import 'package:finance/screen/home/home.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -46,11 +48,11 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (context) => QuoteBloc()..add(LoadQuote())),
         BlocProvider(create: (context) => TokenBloc()..add(GetToken())),
         BlocProvider(create: (context) => CalculatorBloc()),
-       BlocProvider(
-      create: (context) => LendingBloc(FirebaseFirestore.instance)
-        ..add(LoadLendingsEvent())),
-         BlocProvider<ProfileBloc>(
-          create: (context) => ProfileBloc(firestore),
+        BlocProvider(
+            create: (context) => LendingBloc(FirebaseFirestore.instance)
+              ..add(LoadLendingsEvent())),
+        BlocProvider<ProfileBloc>(
+          create: (context) => ProfileBloc(firestore)..add(LoadProfile()),
         ),
       ],
       child: MaterialApp(
@@ -65,9 +67,34 @@ class MyApp extends StatelessWidget {
               BlocProvider.of<ShopBloc>(context).add(LoadShops());
             }
           },
-          child: const SplashScreen(),
+          child: const OnBoard(),
         ),
       ),
+    );
+  }
+}
+
+class OnBoard extends StatelessWidget {
+  const OnBoard({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    FirebaseAuth firebaseAuth = FirebaseAuth.instance;
+    return StreamBuilder(
+      stream: firebaseAuth.authStateChanges(),
+      builder: (context, snapshot) {
+        if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Scaffold(
+            body: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+        if (snapshot.hasData) {
+          return const HomeScreen();
+        }
+        return const SplashScreen();
+      },
     );
   }
 }
