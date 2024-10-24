@@ -1,5 +1,6 @@
 import 'package:finance/authentication/bloc/sign_up/sign_up_bloc.dart';
 import 'package:finance/authentication/bloc/sign_up/sign_up_event.dart';
+import 'package:finance/authentication/bloc/sign_up/sign_up_state.dart';
 import 'package:finance/authentication/view/forget_password_view.dart';
 import 'package:finance/authentication/view/signup_screen.dart';
 import 'package:finance/constant/colors.dart';
@@ -47,10 +48,12 @@ class _LoginPageState extends State<LoginPage> {
               const SnackBar(content: Text('Login successful!')),
             );
             Navigator.push(
-              // ignore: use_build_context_synchronously
               context,
               MaterialPageRoute(builder: (context) => const HomeScreen()),
             );
+          } else if (state is GoogleSignUpSuccess) {
+            Navigator.push(context,
+                MaterialPageRoute(builder: (context) => const HomeScreen()));
           } else if (state is LoginFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Error: ${state.error}')),
