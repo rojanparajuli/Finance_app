@@ -1,3 +1,4 @@
+import 'package:finance/animation/loading_screen.dart';
 import 'package:finance/bloc/lending/lending_bloc.dart';
 import 'package:finance/bloc/lending/lending_event.dart';
 import 'package:finance/bloc/lending/lending_statee.dart';
@@ -95,7 +96,7 @@ class LendingListPage extends StatelessWidget {
               ),
             );
           }
-          return const Center(child: CircularProgressIndicator());
+          return const Center(child: LoadingScreen());
         },
       ),
       floatingActionButton: FloatingActionButton(
@@ -103,7 +104,7 @@ class LendingListPage extends StatelessWidget {
         onPressed: () {
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => LendingAddPage()),
+            MaterialPageRoute(builder: (context) => const LendingAddPage()),
           );
         },
         child: const Icon(

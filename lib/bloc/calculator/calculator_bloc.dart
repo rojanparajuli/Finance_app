@@ -47,24 +47,22 @@ class CalculatorBloc extends Bloc<CalculatorEvent, CalculatorState> {
   void _onCalculate(Calculate event, Emitter<CalculatorState> emit) {
     if (_currentInput.isEmpty || _operator.isEmpty) return;
 
-    // Parse the second number
-    double _secondNumber = double.tryParse(_currentInput) ?? 0.0;
+    double secondNumber = double.tryParse(_currentInput) ?? 0.0;
     double result;
 
-    // Perform the calculation based on the operator
     switch (_operator) {
       case '+':
-        result = _firstNumber + _secondNumber;
+        result = _firstNumber + secondNumber;
         break;
       case '-':
-        result = _firstNumber - _secondNumber;
+        result = _firstNumber - secondNumber;
         break;
       case 'x':
-        result = _firstNumber * _secondNumber;
+        result = _firstNumber * secondNumber;
         break;
       case '/':
-        if (_secondNumber != 0) {
-          result = _firstNumber / _secondNumber;
+        if (secondNumber != 0) {
+          result = _firstNumber / secondNumber;
         } else {
           emit(CalculatorInitial(display: 'Error'));
           return;
