@@ -1,4 +1,5 @@
 import 'package:finance/authentication/bloc/login/login_bloc.dart';
+import 'package:finance/authentication/view/change_password_view.dart';
 import 'package:finance/constant/colors.dart';
 import 'package:finance/screen/profile/profile_screen.dart';
 import 'package:finance/widget/responsive.dart';
@@ -71,6 +72,19 @@ class _DrawerItemState extends State<DrawerItem> {
               context,
               MaterialPageRoute(
                 builder: (context) => ProfileScreen(userId: userId),
+              ),
+            );
+          },
+        ),
+          _buildMenuItem(
+          context,
+          icon: Icons.lock,
+          title: 'Change Password',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => ChangePasswordPage(),
               ),
             );
           },

@@ -13,6 +13,17 @@ import 'package:getwidget/getwidget.dart';
 import 'package:flutter_widget_from_html/flutter_widget_from_html.dart';
 
 class HomeScreen extends StatelessWidget {
+  String getGreeting() {
+    final hour = DateTime.now().hour;
+    if (hour < 12) {
+      return 'Good Morning';
+    } else if (hour < 17) {
+      return 'Good Afternoon';
+    } else {
+      return 'Good Evening';
+    }
+  }
+
   const HomeScreen({super.key});
 
   @override
@@ -22,7 +33,7 @@ class HomeScreen extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Appcolor.primary,
         title: Text(
-          'Dashboard',
+          "${getGreeting()}, User",
           style: GoogleFonts.lora(
             color: Colors.white,
             fontSize: 22,
@@ -144,7 +155,11 @@ class HomeScreen extends StatelessWidget {
                           ),
                           GFButton(
                             onPressed: () {
-                              Navigator.push(context, MaterialPageRoute(builder: (context)=> const LendingListPage()));
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const LendingListPage()));
                             },
                             text: "Lending",
                             icon: const Icon(Icons.person,
@@ -215,7 +230,6 @@ class HomeScreen extends StatelessWidget {
                                       style="border:none; overflow:hidden; width:1111111150px !important; " allowtransparency="true"></iframe>
                                      """),
                                   ),
-                                  
                                 ),
                               ),
                             ],
