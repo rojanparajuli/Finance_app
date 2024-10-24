@@ -1,3 +1,4 @@
+import 'package:finance/screen/calculator/calculator_screen.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:finance/animation/loading_screen.dart';
@@ -157,7 +158,9 @@ class HomeScreen extends StatelessWidget {
                             ),
                           ),
                           GFButton(
-                            onPressed: () {},
+                            onPressed: () {
+                              Navigator.push(context, MaterialPageRoute(builder: (context)=>  CalculatorScreen()));
+                            },
                             text: "Calculator",
                             icon: const Icon(Icons.calculate,
                                 color: Colors.white, size: 16),
@@ -183,7 +186,6 @@ class HomeScreen extends StatelessWidget {
                           Row(
                             children: [
                               Expanded(
-                                // Wrap with Expanded
                                 child: Container(
                                   alignment: Alignment.center,
                                   height: 380,
@@ -197,10 +199,12 @@ class HomeScreen extends StatelessWidget {
                                       ),
                                     ],
                                   ),
-                                  child: const HtmlWidget("""
-              <iframe src="https://www.hamropatro.com/widgets/calender-full.php" frameborder="0" scrolling="no" marginwidth="0" marginheight="0"
-              style="border:none; overflow:hidden; width:850px !important; " allowtransparency="true"></iframe>
-              """),
+                                  child: const Center(
+                                    child: HtmlWidget("""
+                                    <iframe src="https://www.hamropatro.com/widgets/calender-full.php" frameborder="0" scrolling="no" marginwidth="0" marginheight="0"
+                                      style="border:none; overflow:hidden; width:850px !important; " allowtransparency="true"></iframe>
+                                     """),
+                                  ),
                                 ),
                               ),
                             ],

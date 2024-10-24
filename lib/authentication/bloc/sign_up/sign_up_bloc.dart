@@ -37,9 +37,9 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
         );
 
         await _firebaseAuth.signInWithCredential(credential);
-        emit(GoogleSignUpSuccess()); // Show success state
+        emit(GoogleSignUpSuccess()); 
       } catch (e) {
-        emit(GoogleSignUpFailure(error: e.toString())); // Show failure state
+        emit(GoogleSignUpFailure(error: e.toString())); 
       }
     });
 
