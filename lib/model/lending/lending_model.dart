@@ -17,9 +17,9 @@ class Lending {
     required this.returnDate,
   });
 
-  factory Lending.fromMap(Map<String, dynamic> data) {
+  factory Lending.fromMap(DocumentSnapshot data) {
     return Lending(
-      id: data['id'] ?? '',
+      id: data.id,
       name: data['name'] ?? '',
       amount: data['amount'] ?? 0.0,
       promisedDate: (data['promisedDate'] as Timestamp).toDate(),
