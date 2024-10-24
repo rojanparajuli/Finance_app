@@ -14,7 +14,7 @@ class ProfileScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    context.read<ProfileBloc>().add(LoadProfile(userId));
+    context.read<ProfileBloc>().add(LoadProfile());
 
     return Scaffold(
       appBar: AppBar(
@@ -36,8 +36,7 @@ class ProfileScreen extends StatelessWidget {
       body: BlocBuilder<ProfileBloc, ProfileState>(
         builder: (context, state) {
           if (state is ProfileLoading) {
-            return const Center(
-                child: LoadingScreen());
+            return const Center(child: LoadingScreen());
           } else if (state is ProfileLoaded) {
             return Padding(
               padding: const EdgeInsets.all(16.0),
