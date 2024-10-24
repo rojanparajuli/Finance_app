@@ -66,7 +66,7 @@ class ChangePasswordPage extends StatelessWidget {
               style: GoogleFonts.lora(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
-                color: Color.fromARGB(255, 220, 111, 111),
+                color: const Color.fromARGB(255, 220, 111, 111),
               ),
             ),
             const SizedBox(height: 30),

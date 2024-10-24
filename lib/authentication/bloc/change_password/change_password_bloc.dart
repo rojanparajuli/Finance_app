@@ -27,10 +27,8 @@ Future<void> _onChangePasswordEvent(
       password: event.oldPassword,
     );
 
-    // Attempt to reauthenticate the user
     await user.reauthenticateWithCredential(credential);
 
-    // If reauthentication is successful, update the password
     await user.updatePassword(event.newPassword);
     emit(PasswordChanged());
   } catch (e) {
