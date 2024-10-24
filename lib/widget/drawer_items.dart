@@ -1,6 +1,7 @@
 import 'package:finance/authentication/bloc/login/login_bloc.dart';
 import 'package:finance/authentication/view/change_password_view.dart';
 import 'package:finance/constant/colors.dart';
+import 'package:finance/screen/about_us/about_us_view.dart';
 import 'package:finance/screen/profile/profile_screen.dart';
 import 'package:finance/screen/support/suupport_screen.dart';
 import 'package:finance/widget/responsive.dart';
@@ -98,7 +99,20 @@ class _DrawerItemState extends State<DrawerItem> {
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => SupportPage(),
+                builder: (context) => const SupportPage(),
+              ),
+            );
+          },
+        ),
+          _buildMenuItem(
+          context,
+          icon: Icons.info,
+          title: 'About Us',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const AboutUsScreen(),
               ),
             );
           },
@@ -171,7 +185,6 @@ class _DrawerItemState extends State<DrawerItem> {
             ),
             TextButton(
               onPressed: () {
-                // Handle logout action
               },
               child: Text(
                 'Logout',
