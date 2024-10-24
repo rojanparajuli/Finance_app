@@ -1,4 +1,5 @@
 import 'package:finance/animation/splash_screen.dart';
+import 'package:finance/authentication/bloc/change_password/change_password_bloc.dart';
 import 'package:finance/authentication/bloc/forget_password/forget_password_bloc.dart';
 import 'package:finance/authentication/bloc/login/login_bloc.dart';
 import 'package:finance/authentication/bloc/login/login_state.dart';
@@ -54,6 +55,7 @@ class MyApp extends StatelessWidget {
         BlocProvider<ProfileBloc>(
           create: (context) => ProfileBloc(firestore)..add(LoadProfile()),
         ),
+        BlocProvider(create: (context) => PasswordBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
