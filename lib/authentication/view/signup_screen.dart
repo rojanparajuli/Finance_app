@@ -25,6 +25,16 @@ class _SignUpPageState extends State<SignUpPage> {
   final TextEditingController _confirmPasswordController =
       TextEditingController();
   final TextEditingController _fullNameController = TextEditingController();
+  final ValueNotifier<bool> _isPasswordVisible = ValueNotifier<bool>(false);
+  final ValueNotifier<bool> _isConfirmPasswordVisible =
+      ValueNotifier<bool>(false);
+
+  @override
+  void dispose() {
+    _isPasswordVisible.dispose();
+    _isConfirmPasswordVisible.dispose();
+    super.dispose();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -142,52 +152,82 @@ class _SignUpPageState extends State<SignUpPage> {
                       style: GoogleFonts.lora(fontSize: 16),
                     ),
                     const SizedBox(height: 10),
-                    GFTextField(
-                      controller: _passwordController,
-                      decoration: InputDecoration(
-                        labelText: 'Password',
-                        labelStyle: GoogleFonts.lora(
-                            fontSize: 18, fontWeight: FontWeight.w600),
-                        filled: true,
-                        fillColor: Colors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Colors.blue),
-                        ),
-                      ),
-                      obscureText: true,
-                      style: GoogleFonts.lora(fontSize: 16),
+                    ValueListenableBuilder<bool>(
+                      valueListenable: _isPasswordVisible,
+                      builder: (context, isVisible, child) {
+                        return GFTextField(
+                          controller: _passwordController,
+                          decoration: InputDecoration(
+                            labelText: 'Password',
+                            labelStyle: GoogleFonts.lora(
+                                fontSize: 18, fontWeight: FontWeight.w600),
+                            filled: true,
+                            fillColor: Colors.white,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(color: Colors.grey),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(color: Colors.blue),
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                isVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Colors.grey,
+                              ),
+                              onPressed: () =>
+                                  _isPasswordVisible.value = !isVisible,
+                            ),
+                          ),
+                          obscureText: !isVisible,
+                          style: GoogleFonts.lora(fontSize: 16),
+                        );
+                      },
                     ),
                     const SizedBox(height: 10),
-                    GFTextField(
-                      controller: _confirmPasswordController,
-                      decoration: InputDecoration(
-                        labelText: 'Confirm Password',
-                        labelStyle: GoogleFonts.lora(
-                            fontSize: 18, fontWeight: FontWeight.w600),
-                        filled: true,
-                        fillColor: Colors.white,
-                        enabledBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Colors.grey),
-                        ),
-                        focusedBorder: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(12),
-                          borderSide: const BorderSide(color: Colors.blue),
-                        ),
-                      ),
-                      obscureText: true,
-                      style: GoogleFonts.lora(fontSize: 16),
+                    ValueListenableBuilder<bool>(
+                      valueListenable: _isConfirmPasswordVisible,
+                      builder: (context, isVisible, child) {
+                        return GFTextField(
+                          controller: _confirmPasswordController,
+                          decoration: InputDecoration(
+                            labelText: 'Confirm Password',
+                            labelStyle: GoogleFonts.lora(
+                                fontSize: 18, fontWeight: FontWeight.w600),
+                            filled: true,
+                            fillColor: Colors.white,
+                            enabledBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(color: Colors.grey),
+                            ),
+                            focusedBorder: OutlineInputBorder(
+                              borderRadius: BorderRadius.circular(12),
+                              borderSide: const BorderSide(color: Colors.blue),
+                            ),
+                            suffixIcon: IconButton(
+                              icon: Icon(
+                                isVisible
+                                    ? Icons.visibility
+                                    : Icons.visibility_off,
+                                color: Colors.grey,
+                              ),
+                              onPressed: () =>
+                                  _isConfirmPasswordVisible.value = !isVisible,
+                            ),
+                          ),
+                          obscureText: !isVisible,
+                          style: GoogleFonts.lora(fontSize: 16),
+                        );
+                      },
                     ),
                     const SizedBox(height: 10),
                     GFCheckboxListTile(
                       title: RichText(
                         text: TextSpan(
-                          text: 'I agree to the ', // Regular text
+                          text: 'I agree to the ',
                           style: GoogleFonts.lora(
                               fontSize: 13, color: Colors.black),
                           children: [
@@ -195,14 +235,16 @@ class _SignUpPageState extends State<SignUpPage> {
                               text: 'Terms and Conditions',
                               style: GoogleFonts.lora(
                                 fontSize: 13,
-                                color: Colors
-                                    .blue, 
-                                decoration: TextDecoration
-                                    .underline, 
+                                color: Colors.blue,
+                                decoration: TextDecoration.underline,
                               ),
                               recognizer: TapGestureRecognizer()
                                 ..onTap = () {
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const TermsScreen()));
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) =>
+                                              const TermsScreen()));
                                 },
                             ),
                           ],
