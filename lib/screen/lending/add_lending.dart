@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:intl/intl.dart'; // Import for date formatting
-
+import 'package:intl/intl.dart';
 import 'package:finance/bloc/lending/lending_bloc.dart';
 import 'package:finance/bloc/lending/lending_event.dart';
 import 'package:finance/constant/colors.dart';
@@ -14,6 +13,7 @@ class LendingAddPage extends StatefulWidget {
   const LendingAddPage({super.key, this.lending});
 
   @override
+  // ignore: library_private_types_in_public_api
   _LendingAddPageState createState() => _LendingAddPageState();
 }
 
@@ -53,7 +53,7 @@ class _LendingAddPageState extends State<LendingAddPage> {
     );
     if (picked != null) {
       dateNotifier.value = picked;
-      print('Selected date: $picked'); // Debugging line
+      // print('Selected date: $picked');
     }
   }
 
@@ -197,7 +197,7 @@ class _LendingAddPageState extends State<LendingAddPage> {
           child: ListTile(
             contentPadding: EdgeInsets.zero,
             title: Text(
-              '$label: ${DateFormat('yyyy-MM-dd').format(date)}', // Format the date
+              '$label: ${DateFormat('yyyy-MM-dd').format(date)}', 
               style: GoogleFonts.lora(
                 fontSize: 16,
                 fontWeight: FontWeight.w500,
