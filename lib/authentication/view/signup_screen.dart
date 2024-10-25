@@ -47,7 +47,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 backgroundColor: Colors.green,
               ),
             );
-            Navigator.pop(context); 
+            Navigator.pop(context);
           } else if (state is SignUpFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
               SnackBar(content: Text('Error: ${state.error}')),
@@ -61,7 +61,7 @@ class _SignUpPageState extends State<SignUpPage> {
             );
             Navigator.pushReplacement(
               context,
-              MaterialPageRoute(builder: (context) =>  const HomeScreen()),
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
             );
           } else if (state is GoogleSignUpFailure) {
             ScaffoldMessenger.of(context).showSnackBar(
@@ -243,6 +243,14 @@ class _SignUpPageState extends State<SignUpPage> {
                           context
                               .read<SignUpBloc>()
                               .add(GoogleSignUpSubmitted());
+                          SnackBar(
+                            content:
+                                const Text('Please wait it takes few seconds'),
+                            action: SnackBarAction(
+                              label: 'okay',
+                              onPressed: () {},
+                            ),
+                          );
                         },
                         child: Container(
                           decoration: BoxDecoration(

@@ -1,4 +1,5 @@
 import 'package:bloc/bloc.dart';
+import 'package:finance/myapp.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'login_event.dart';
 import 'login_state.dart';
@@ -83,6 +84,12 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
   Future<String> getUserId() async {
     final uid = _firebaseAuth.currentUser!.uid;
     return uid;
+
+  }
+
+  Future logout() async {
+    _firebaseAuth.signOut();
+    return const OnBoard();
 
   }
   

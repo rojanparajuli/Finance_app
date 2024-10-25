@@ -22,6 +22,8 @@ Future<void> _onChangePasswordEvent(
       return;
     }
 
+    print('old password is ${event.oldPassword}');
+
     AuthCredential credential = EmailAuthProvider.credential(
       email: user.email!,
       password: event.oldPassword,

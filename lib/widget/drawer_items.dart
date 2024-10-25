@@ -1,6 +1,5 @@
 import 'package:finance/authentication/bloc/login/login_bloc.dart';
 import 'package:finance/authentication/view/change_password_view.dart';
-import 'package:finance/authentication/view/login_screen.dart';
 import 'package:finance/constant/colors.dart';
 import 'package:finance/screen/about_us/about_us_view.dart';
 import 'package:finance/screen/profile/profile_screen.dart';
@@ -9,7 +8,6 @@ import 'package:finance/widget/responsive.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 
 class DrawerItem extends StatefulWidget {
   const DrawerItem({super.key});
@@ -187,10 +185,8 @@ class _DrawerItemState extends State<DrawerItem> {
             ),
             TextButton(
               onPressed: () async {
-                SharedPreferences prefs = await SharedPreferences.getInstance();
-                await prefs.clear();
-                Navigator.push(context,
-                    MaterialPageRoute(builder: (context) => const LoginPage()));
+                context.read<LoginBloc>().logout();
+                Navigator.pop(context);
               },
               child: Text(
                 'Logout',
