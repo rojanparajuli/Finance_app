@@ -20,6 +20,7 @@ import 'package:finance/bloc/shop/shop_event.dart';
 import 'package:finance/bloc/splash_screen/splash_screen_bloc.dart';
 import 'package:finance/bloc/splash_screen/splash_screen_event.dart';
 import 'package:finance/bloc/support_page/support_page_bloc.dart';
+import 'package:finance/bloc/terms_condition/terms_bloc.dart';
 import 'package:finance/bloc/trasnsection/transection_bloc.dart';
 import 'package:finance/repository/message_repository.dart';
 import 'package:finance/screen/home/home.dart';
@@ -64,6 +65,8 @@ class MyApp extends StatelessWidget {
         create: (context) => MessageBloc(MessageRepository())),
         BlocProvider(
       create: (context) => AboutUsBloc()..add(LoadAboutUsEvent())),
+       BlocProvider(
+      create: (_) => TermsBloc()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

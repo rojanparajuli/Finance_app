@@ -3,6 +3,8 @@ import 'package:finance/authentication/bloc/sign_up/sign_up_event.dart';
 import 'package:finance/authentication/bloc/sign_up/sign_up_state.dart';
 import 'package:finance/constant/colors.dart';
 import 'package:finance/screen/home/home.dart';
+import 'package:finance/screen/terms_and_condition/terms_condition.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
@@ -183,9 +185,28 @@ class _SignUpPageState extends State<SignUpPage> {
                     ),
                     const SizedBox(height: 10),
                     GFCheckboxListTile(
-                      title: Text(
-                        "I agree to the Terms and Conditions",
-                        style: GoogleFonts.lora(fontSize: 13),
+                      title: RichText(
+                        text: TextSpan(
+                          text: 'I agree to the ', // Regular text
+                          style: GoogleFonts.lora(
+                              fontSize: 13, color: Colors.black),
+                          children: [
+                            TextSpan(
+                              text: 'Terms and Conditions',
+                              style: GoogleFonts.lora(
+                                fontSize: 13,
+                                color: Colors
+                                    .blue, 
+                                decoration: TextDecoration
+                                    .underline, 
+                              ),
+                              recognizer: TapGestureRecognizer()
+                                ..onTap = () {
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) => const TermsScreen()));
+                                },
+                            ),
+                          ],
+                        ),
                       ),
                       size: 25,
                       value: termsAccepted,
