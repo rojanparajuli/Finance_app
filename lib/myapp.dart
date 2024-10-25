@@ -60,7 +60,7 @@ class MyApp extends StatelessWidget {
           create: (context) => ProfileBloc(firestore)..add(LoadProfile()),
         ),
         BlocProvider(create: (context) => PasswordBloc()),
-        BlocProvider(
+        BlocProvider( 
         create: (context) => MessageBloc(MessageRepository())),
         BlocProvider(
       create: (context) => AboutUsBloc()..add(LoadAboutUsEvent())),
