@@ -1,6 +1,7 @@
 import 'package:finance/authentication/bloc/change_password/change_password_bloc.dart';
 import 'package:finance/authentication/bloc/change_password/change_password_event.dart';
 import 'package:finance/authentication/bloc/change_password/change_password_state.dart';
+import 'package:finance/authentication/view/forget_password_view.dart';
 import 'package:finance/constant/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -82,13 +83,14 @@ class ChangePasswordPage extends StatelessWidget {
                     suffixIcon: IconButton(
                       icon: Icon(
                         isVisible ? Icons.visibility : Icons.visibility_off,
+                        color: Appcolor.primary,
                       ),
                       onPressed: () {
                         _isOldPasswordVisible.value = !isVisible;
                       },
                     ),
                     filled: true,
-                    fillColor: Colors.grey[100],
+                    fillColor: Colors.grey[200],
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide.none,
@@ -110,13 +112,14 @@ class ChangePasswordPage extends StatelessWidget {
                     suffixIcon: IconButton(
                       icon: Icon(
                         isVisible ? Icons.visibility : Icons.visibility_off,
+                        color: Appcolor.primary,
                       ),
                       onPressed: () {
                         _isNewPasswordVisible.value = !isVisible;
                       },
                     ),
                     filled: true,
-                    fillColor: Colors.grey[100],
+                    fillColor: Colors.grey[200],
                     border: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(10.0),
                       borderSide: BorderSide.none,
@@ -129,11 +132,10 @@ class ChangePasswordPage extends StatelessWidget {
             BlocListener<PasswordBloc, PasswordState>(
               listener: (context, state) {
                 if (state is PasswordLoading) {
+                  // You can show a loading indicator here if needed
                 } else if (state is PasswordChanged) {
                   _showSnackbar(context, "Password changed successfully!",
                       backgroundColor: Colors.green);
-
-
                   Navigator.pop(context);
                 } else if (state is PasswordError) {
                   _showSnackbar(context, state.message);
@@ -181,6 +183,36 @@ class ChangePasswordPage extends StatelessWidget {
               ),
             ),
             const SizedBox(height: 30),
+            Center(
+              child: Column(
+                children: [
+                  const Row(
+                    children: [
+                      Expanded(child: Divider()),
+                      Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        child: Text('Or', style: TextStyle(fontSize: 16)),
+                      ),
+                      Expanded(child: Divider()),
+                    ],
+                  ),
+                  const SizedBox(height: 10),
+                  GestureDetector(
+                    onTap: () {
+                      Navigator.push(context, MaterialPageRoute(builder: (context) => ForgotPasswordPage()));
+                    },
+                    child: Text(
+                      'Forgot password?',
+                      style: GoogleFonts.lora(
+                        fontSize: 16,
+                        fontWeight: FontWeight.w600,
+                        color: Appcolor.primary,
+                      ),
+                    ),
+                  ),
+                ],
+              ),
+            ),
           ],
         ),
       ),
