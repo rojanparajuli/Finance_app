@@ -1,53 +1,59 @@
+import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:google_fonts/google_fonts.dart';
+import 'package:intl/intl.dart'; // Import for date formatting
+
 import 'package:finance/bloc/lending/lending_bloc.dart';
 import 'package:finance/bloc/lending/lending_event.dart';
 import 'package:finance/constant/colors.dart';
 import 'package:finance/model/lending/lending_model.dart';
-import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class LendingAddPage extends StatefulWidget {
-  final Lending? lending; // Optional parameter for editing
+  final Lending? lending;
 
   const LendingAddPage({super.key, this.lending});
 
   @override
-  // ignore: library_private_types_in_public_api
   _LendingAddPageState createState() => _LendingAddPageState();
 }
 
 class _LendingAddPageState extends State<LendingAddPage> {
   final _formKey = GlobalKey<FormState>();
-  String _name = '';
-  double _amount = 0.0;
-  DateTime _promisedDate = DateTime.now();
-  DateTime _returnDate = DateTime.now();
+  final _nameController = TextEditingController();
+  final _amountController = TextEditingController();
+  final ValueNotifier<DateTime> _promisedDate = ValueNotifier<DateTime>(DateTime.now());
+  final ValueNotifier<DateTime> _returnDate = ValueNotifier<DateTime>(DateTime.now());
 
   @override
   void initState() {
     super.initState();
     if (widget.lending != null) {
-      _name = widget.lending!.name;
-      _amount = widget.lending!.amount;
-      _promisedDate = widget.lending!.promisedDate;
-      _returnDate = widget.lending!.returnDate;
+      _nameController.text = widget.lending!.name;
+      _amountController.text = widget.lending!.amount.toString();
+      _promisedDate.value = widget.lending!.promisedDate;
+      _returnDate.value = widget.lending!.returnDate;
     }
   }
 
-  Future<void> _selectDate(BuildContext context, bool isPromisedDate) async {
+  @override
+  void dispose() {
+    _nameController.dispose();
+    _amountController.dispose();
+    _promisedDate.dispose();
+    _returnDate.dispose();
+    super.dispose();
+  }
+
+  Future<void> _selectDate(BuildContext context, ValueNotifier<DateTime> dateNotifier) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: isPromisedDate ? _promisedDate : _returnDate,
+      initialDate: dateNotifier.value,
       firstDate: DateTime(2000),
       lastDate: DateTime(2100),
     );
-
     if (picked != null) {
-      if (isPromisedDate) {
-        _promisedDate = picked;
-      } else {
-        _returnDate = picked;
-      }
+      dateNotifier.value = picked;
+      print('Selected date: $picked'); // Debugging line
     }
   }
 
@@ -86,6 +92,7 @@ class _LendingAddPageState extends State<LendingAddPage> {
               ),
               const SizedBox(height: 16),
               TextFormField(
+                controller: _nameController,
                 decoration: InputDecoration(
                   labelText: 'Name',
                   labelStyle: GoogleFonts.lora(color: Appcolor.secondary),
@@ -94,13 +101,12 @@ class _LendingAddPageState extends State<LendingAddPage> {
                     borderSide: BorderSide(color: Appcolor.primary, width: 2.0),
                   ),
                 ),
-                initialValue: _name,
-                onSaved: (value) => _name = value!,
                 validator: (value) => value!.isEmpty ? 'Enter a name' : null,
                 style: GoogleFonts.lora(),
               ),
               const SizedBox(height: 16),
               TextFormField(
+                controller: _amountController,
                 decoration: InputDecoration(
                   labelText: 'Amount',
                   labelStyle: GoogleFonts.lora(color: Appcolor.secondary),
@@ -109,23 +115,21 @@ class _LendingAddPageState extends State<LendingAddPage> {
                     borderSide: BorderSide(color: Appcolor.primary, width: 2.0),
                   ),
                 ),
-                initialValue: _amount.toString(),
                 keyboardType: TextInputType.number,
-                onSaved: (value) => _amount = double.tryParse(value!) ?? 0.0,
                 validator: (value) => value!.isEmpty ? 'Enter an amount' : null,
                 style: GoogleFonts.lora(),
               ),
               const SizedBox(height: 16),
               _buildDateField(
-                label: 'GivenDate',
-                date: _promisedDate,
-                onTap: () => _selectDate(context, true),
+                label: 'Given Date',
+                dateNotifier: _promisedDate,
+                onTap: () => _selectDate(context, _promisedDate),
               ),
               const SizedBox(height: 16),
               _buildDateField(
-                label: 'ReturnDate',
-                date: _returnDate,
-                onTap: () => _selectDate(context, false),
+                label: 'Return Date',
+                dateNotifier: _returnDate,
+                onTap: () => _selectDate(context, _returnDate),
               ),
               const SizedBox(height: 20),
               Center(
@@ -138,13 +142,12 @@ class _LendingAddPageState extends State<LendingAddPage> {
                   ),
                   onPressed: () {
                     if (_formKey.currentState!.validate()) {
-                      _formKey.currentState!.save();
                       final lending = Lending(
                         id: widget.lending?.id ?? DateTime.now().toString(),
-                        name: _name,
-                        amount: _amount,
-                        promisedDate: _promisedDate,
-                        returnDate: _returnDate,
+                        name: _nameController.text,
+                        amount: double.tryParse(_amountController.text) ?? 0.0,
+                        promisedDate: _promisedDate.value,
+                        returnDate: _returnDate.value,
                       );
 
                       if (widget.lending == null) {
@@ -161,12 +164,13 @@ class _LendingAddPageState extends State<LendingAddPage> {
                               lending: lending,
                             ));
                       }
-                      Navigator.pop(context); 
+                      Navigator.pop(context);
                     }
                   },
                   child: Text(
-                      widget.lending == null ? 'Add Lending' : 'Edit Lending',
-                      style: GoogleFonts.lora(color: Colors.white)),
+                    widget.lending == null ? 'Add Lending' : 'Edit Lending',
+                    style: GoogleFonts.lora(color: Colors.white),
+                  ),
                 ),
               ),
             ],
@@ -176,25 +180,39 @@ class _LendingAddPageState extends State<LendingAddPage> {
     );
   }
 
-  Widget _buildDateField(
-      {required String label,
-      required DateTime date,
-      required VoidCallback onTap}) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-      children: [
-        Expanded(
-          child: Text(
-            '$label: ${date.toLocal()}'.split(' ')[0],
-            style: GoogleFonts.lora(fontSize: 16, fontWeight: FontWeight.w500),
+  Widget _buildDateField({
+    required String label,
+    required ValueNotifier<DateTime> dateNotifier,
+    required VoidCallback onTap,
+  }) {
+    return ValueListenableBuilder<DateTime>(
+      valueListenable: dateNotifier,
+      builder: (context, date, child) {
+        return Container(
+          padding: const EdgeInsets.symmetric(vertical: 4.0, horizontal: 8.0),
+          decoration: BoxDecoration(
+            border: Border.all(color: Colors.grey.shade400),
+            borderRadius: BorderRadius.circular(8.0),
           ),
-        ),
-        IconButton(
-          icon: const Icon(Icons.calendar_today),
-          onPressed: onTap,
-          color: Appcolor.primary,
-        ),
-      ],
+          child: ListTile(
+            contentPadding: EdgeInsets.zero,
+            title: Text(
+              '$label: ${DateFormat('yyyy-MM-dd').format(date)}', // Format the date
+              style: GoogleFonts.lora(
+                fontSize: 16,
+                fontWeight: FontWeight.w500,
+                color: Colors.black,
+              ),
+              overflow: TextOverflow.ellipsis,
+            ),
+            trailing: IconButton(
+              icon: const Icon(Icons.calendar_today),
+              onPressed: onTap,
+              color: Appcolor.primary,
+            ),
+          ),
+        );
+      },
     );
   }
 }

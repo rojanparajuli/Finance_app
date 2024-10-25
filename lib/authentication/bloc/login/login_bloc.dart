@@ -64,6 +64,7 @@ class LoginBloc extends Bloc<LoginEvent, LoginState> {
      final prefs = await SharedPreferences.getInstance();
      final email = prefs.getString('email');
      final password = prefs.getString('password');
+     
 
      if (email != null || password != null){
       emit(GetSaveRememberMeSuccess(email: email ?? '', password: password ?? '',));
