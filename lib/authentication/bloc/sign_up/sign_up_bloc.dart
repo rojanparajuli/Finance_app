@@ -16,10 +16,10 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           email: event.email,
           password: event.password,
         );
-        FirebaseFirestore.instance.collection('users').doc(_firebaseAuth.currentUser?.uid).set({
-          'email': event.email,
-          'name': event.fullName
-        });
+        FirebaseFirestore.instance
+            .collection('users')
+            .doc(_firebaseAuth.currentUser?.uid)
+            .set({'email': event.email, 'name': event.fullName});
 
         emit(SignUpSuccess());
       } catch (e) {
@@ -28,13 +28,18 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
     });
 
     on<GoogleSignUpSubmitted>((event, emit) async {
-      emit(GoogleSignUpLoading()); 
+      emit(GoogleSignUpLoading());
       try {
+        // Trigger the Google Sign-In flow.
         final GoogleSignInAccount? googleUser = await GoogleSignIn().signIn();
+
+        // If Google Sign-In was cancelled by the user.
         if (googleUser == null) {
           emit(const GoogleSignUpFailure(error: 'Google Sign-In canceled.'));
           return;
         }
+
+        // Retrieve authentication details from the signed-in Google account.
         final GoogleSignInAuthentication googleAuth =
             await googleUser.authentication;
         final credential = GoogleAuthProvider.credential(
@@ -42,18 +47,40 @@ class SignUpBloc extends Bloc<SignUpEvent, SignUpState> {
           idToken: googleAuth.idToken,
         );
 
-        await _firebaseAuth.signInWithCredential(credential);
-        emit(GoogleSignUpSuccess()); 
+        // Sign in with Google credentials.
+        final userCredential =
+            await _firebaseAuth.signInWithCredential(credential);
+
+        // Check if user already exists in Firestore.
+        final user = userCredential.user;
+        final userDoc =
+            FirebaseFirestore.instance.collection('users').doc(user?.uid);
+
+        final docSnapshot = await userDoc.get();
+        if (!docSnapshot.exists) {
+          // If this is a new user, save additional info to Firestore.
+          await userDoc.set({
+            'email': user?.email,
+            'name': googleUser.displayName,
+          });
+        }
+
+        // Emit GoogleSignUpSuccess instead, which we will handle in the listener.
+        emit(GoogleSignUpSuccess());
       } catch (e) {
-        emit(GoogleSignUpFailure(error: e.toString())); 
+        if (e is FirebaseAuthException &&
+            e.code == 'account-exists-with-different-credential') {
+          // Handle the case where the email is already associated with another account.
+          emit(const GoogleSignUpFailure(
+              error: 'Account exists with a different credential.'));
+        } else {
+          emit(GoogleSignUpFailure(error: e.toString()));
+        }
       }
     });
 
     on<ToggleTermsAccepted>((event, emit) {
       emit(SignUpFormUpdated(termsAccepted: event.isAccepted));
     });
-
-      
-
   }
 }

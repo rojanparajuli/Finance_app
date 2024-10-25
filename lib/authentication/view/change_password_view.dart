@@ -133,12 +133,10 @@ class ChangePasswordPage extends StatelessWidget {
                   _showSnackbar(context, "Password changed successfully!",
                       backgroundColor: Colors.green);
 
-                  print('###########################');
 
                   Navigator.pop(context);
                 } else if (state is PasswordError) {
                   _showSnackbar(context, state.message);
-                  print('...........................');
                 }
               },
               child: SizedBox(

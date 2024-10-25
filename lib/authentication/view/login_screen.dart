@@ -1,5 +1,3 @@
-import 'package:finance/authentication/bloc/sign_up/sign_up_bloc.dart';
-import 'package:finance/authentication/bloc/sign_up/sign_up_event.dart';
 import 'package:finance/authentication/bloc/sign_up/sign_up_state.dart';
 import 'package:finance/authentication/view/forget_password_view.dart';
 import 'package:finance/authentication/view/signup_screen.dart';
@@ -51,12 +49,18 @@ class _LoginPageState extends State<LoginPage> {
               context,
               MaterialPageRoute(builder: (context) => const HomeScreen()),
             );
-          } else if (state is GoogleSignUpSuccess) {
-            Navigator.push(context,
-                MaterialPageRoute(builder: (context) => const HomeScreen()));
-          } else if (state is LoginFailure) {
+          }
+          else if (state is SignUpSuccess || state is GoogleSignUpSuccess) {
             ScaffoldMessenger.of(context).showSnackBar(
-              SnackBar(content: Text('Error: ${state.error}')),
+              const SnackBar(content: Text('Login successful!')),
+            );
+            Navigator.push(
+              context,
+              MaterialPageRoute(builder: (context) => const HomeScreen()),
+            );
+          } else if (state is SignUpFailure || state is GoogleSignUpFailure) {
+            ScaffoldMessenger.of(context).showSnackBar(
+              const SnackBar(content: Text('Error:')),
             );
           }
         },
@@ -236,102 +240,103 @@ class _LoginPageState extends State<LoginPage> {
                       );
                     },
                   ),
-                  const SizedBox(height: 10),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    children: [
-                      const Expanded(
-                        child: Divider(color: Colors.grey, height: 20),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Text(
-                          'Or login with',
-                          style: GoogleFonts.lora(
-                              color: Colors.grey, fontSize: 18),
-                        ),
-                      ),
-                      const Expanded(
-                        child: Divider(color: Colors.grey, height: 20),
-                      ),
-                    ],
-                  ),
-                  const SizedBox(height: 20),
-                  GestureDetector(
-                    onTap: () {
-                      context.read<SignUpBloc>().add(GoogleSignUpSubmitted());
-                    },
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(vertical: 12),
-                      decoration: BoxDecoration(
-                        color: Colors.white,
-                        borderRadius: BorderRadius.circular(12),
-                        border: Border.all(color: Colors.grey),
-                        boxShadow: [
-                          BoxShadow(
-                            color: Colors.grey.withOpacity(0.2),
-                            spreadRadius: 1,
-                            blurRadius: 7,
-                            offset: const Offset(0, 3),
-                          ),
-                        ],
-                      ),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Image.asset('assets/google_logo.png', height: 24),
-                          const SizedBox(width: 10),
-                          RichText(
-                            text: const TextSpan(
-                              children: [
-                                TextSpan(
-                                  text: 'Continue with ',
-                                  style: TextStyle(color: Colors.black),
-                                ),
-                                TextSpan(
-                                  text: 'G',
-                                  style: TextStyle(
-                                      color: Colors.blue,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                TextSpan(
-                                  text: 'o',
-                                  style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                TextSpan(
-                                  text: 'o',
-                                  style: TextStyle(
-                                      color: Color.fromARGB(255, 205, 185, 3),
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                TextSpan(
-                                  text: 'g',
-                                  style: TextStyle(
-                                      color: Colors.blue,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                TextSpan(
-                                  text: 'l',
-                                  style: TextStyle(
-                                      color: Colors.green,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                                TextSpan(
-                                  text: 'e',
-                                  style: TextStyle(
-                                      color: Colors.red,
-                                      fontWeight: FontWeight.bold),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 20),
+                  // const SizedBox(height: 10),
+                  // Row(
+                  //   mainAxisAlignment: MainAxisAlignment.center,
+                  //   children: [
+                  //     const Expanded(
+                  //       child: Divider(color: Colors.grey, height: 20),
+                  //     ),
+                  //     Padding(
+                  //       padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                  //       child: Text(
+                  //         'Or login with',
+                  //         style: GoogleFonts.lora(
+                  //             color: Colors.grey, fontSize: 18),
+                  //       ),
+                  //     ),
+                  //     const Expanded(
+                  //       child: Divider(color: Colors.grey, height: 20),
+                  //     ),
+                  //   ],
+                  // ),
+                  // const SizedBox(height: 20),
+                  // GestureDetector(
+                  //   onTap: () {
+                  //     context.read<SignUpBloc>().add(GoogleSignUpSubmitted());
+                  //     print('...................................');
+                  //   },
+                  //   child: Container(
+                  //     padding: const EdgeInsets.symmetric(vertical: 12),
+                  //     decoration: BoxDecoration(
+                  //       color: Colors.white,
+                  //       borderRadius: BorderRadius.circular(12),
+                  //       border: Border.all(color: Colors.grey),
+                  //       boxShadow: [
+                  //         BoxShadow(
+                  //           color: Colors.grey.withOpacity(0.2),
+                  //           spreadRadius: 1,
+                  //           blurRadius: 7,
+                  //           offset: const Offset(0, 3),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //     child: Row(
+                  //       mainAxisAlignment: MainAxisAlignment.center,
+                  //       children: [
+                  //         Image.asset('assets/google_logo.png', height: 24),
+                  //         const SizedBox(width: 10),
+                  //         RichText(
+                  //           text: const TextSpan(
+                  //             children: [
+                  //               TextSpan(
+                  //                 text: 'Continue with ',
+                  //                 style: TextStyle(color: Colors.black),
+                  //               ),
+                  //               TextSpan(
+                  //                 text: 'G',
+                  //                 style: TextStyle(
+                  //                     color: Colors.blue,
+                  //                     fontWeight: FontWeight.bold),
+                  //               ),
+                  //               TextSpan(
+                  //                 text: 'o',
+                  //                 style: TextStyle(
+                  //                     color: Colors.red,
+                  //                     fontWeight: FontWeight.bold),
+                  //               ),
+                  //               TextSpan(
+                  //                 text: 'o',
+                  //                 style: TextStyle(
+                  //                     color: Color.fromARGB(255, 205, 185, 3),
+                  //                     fontWeight: FontWeight.bold),
+                  //               ),
+                  //               TextSpan(
+                  //                 text: 'g',
+                  //                 style: TextStyle(
+                  //                     color: Colors.blue,
+                  //                     fontWeight: FontWeight.bold),
+                  //               ),
+                  //               TextSpan(
+                  //                 text: 'l',
+                  //                 style: TextStyle(
+                  //                     color: Colors.green,
+                  //                     fontWeight: FontWeight.bold),
+                  //               ),
+                  //               TextSpan(
+                  //                 text: 'e',
+                  //                 style: TextStyle(
+                  //                     color: Colors.red,
+                  //                     fontWeight: FontWeight.bold),
+                  //               ),
+                  //             ],
+                  //           ),
+                  //         ),
+                  //       ],
+                  //     ),
+                  //   ),
+                  // ),
+                  // const SizedBox(height: 20),
                   const SizedBox(height: 20),
                   Center(
                     child: RichText(
