@@ -3,6 +3,7 @@ import 'package:finance/authentication/view/change_password_view.dart';
 import 'package:finance/constant/colors.dart';
 import 'package:finance/screen/about_us/about_us_view.dart';
 import 'package:finance/screen/profile/profile_screen.dart';
+import 'package:finance/screen/rashifal/rashifal_screen.dart';
 import 'package:finance/screen/support/suupport_screen.dart';
 import 'package:finance/widget/responsive.dart';
 import 'package:flutter/material.dart';
@@ -44,7 +45,7 @@ class _DrawerItemState extends State<DrawerItem> {
               style: GoogleFonts.lora(
                 fontSize: 32,
                 fontWeight: FontWeight.bold,
-                color: Colors.black, // Changed to black for visibility
+                color: Appcolor.primary
               ),
             ),
             const SizedBox(height: 20),
@@ -87,6 +88,19 @@ class _DrawerItemState extends State<DrawerItem> {
               context,
               MaterialPageRoute(
                 builder: (context) => ChangePasswordPage(),
+              ),
+            );
+          },
+        ),
+        _buildMenuItem(
+          context,
+          icon: Icons.star_border_purple500_sharp,
+          title: 'Rashifal',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const RashifalScreen(),
               ),
             );
           },

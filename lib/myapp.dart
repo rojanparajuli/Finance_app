@@ -15,6 +15,8 @@ import 'package:finance/bloc/lending/lending_bloc.dart';
 import 'package:finance/bloc/lending/lending_event.dart';
 import 'package:finance/bloc/proile/profile_bloc.dart';
 import 'package:finance/bloc/proile/profile_event.dart';
+import 'package:finance/bloc/rashifal/rashifal_bloc.dart';
+import 'package:finance/bloc/rashifal/rashifal_event.dart';
 import 'package:finance/bloc/shop/shop_bloc.dart';
 import 'package:finance/bloc/shop/shop_event.dart';
 import 'package:finance/bloc/splash_screen/splash_screen_bloc.dart';
@@ -67,6 +69,8 @@ class MyApp extends StatelessWidget {
       create: (context) => AboutUsBloc()..add(LoadAboutUsEvent())),
        BlocProvider(
       create: (_) => TermsBloc()),
+      BlocProvider(
+        create: (_) => RashifalBloc()..add(LoadRashifal())),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
