@@ -71,7 +71,7 @@ class _SupportPageState extends State<SupportPage> {
               ),
             ),
           ),
-          SingleChildScrollView(  // <--- Wrap with SingleChildScrollView
+          SingleChildScrollView(  
             child: Padding(
               padding: const EdgeInsets.all(24.0),
               child: Column(
