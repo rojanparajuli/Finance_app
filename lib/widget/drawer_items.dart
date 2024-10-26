@@ -108,7 +108,7 @@ class _DrawerItemState extends State<DrawerItem> {
         ),
           _buildMenuItem(
           context,
-          icon: Icons.star_border_purple500_sharp,
+          icon: Icons.attach_money,
           title: 'Foreign Exchange',
           onTap: () {
             Navigator.push(

@@ -54,3 +54,4 @@ class ForexResponse {
     return ForexResponse(rates: rates);
   }
 }
+

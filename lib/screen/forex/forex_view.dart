@@ -11,18 +11,43 @@ class ForexScreen extends StatefulWidget {
   const ForexScreen({super.key});
 
   @override
-  // ignore: library_private_types_in_public_api
   _ForexScreenState createState() => _ForexScreenState();
 }
 
 class _ForexScreenState extends State<ForexScreen> {
   final TextEditingController _searchController = TextEditingController();
-  String _searchQuery = '';
+  final ScrollController _scrollController = ScrollController();
+  int _currentPage = 1;
+  final int _perPage = 10;
 
   @override
   void initState() {
     super.initState();
     context.read<ForexBloc>().add(FetchForexRates(from: '2024-01-01', to: '2077-12-31'));
+
+    _scrollController.addListener(_onScroll);
+    _searchController.addListener(() {
+      context.read<ForexBloc>().add(UpdateSearchQuery(_searchController.text));
+    });
+  }
+
+  void _onScroll() {
+    if (_scrollController.position.pixels >= _scrollController.position.maxScrollExtent * 0.9) {
+      _currentPage++;
+      context.read<ForexBloc>().add(LoadMoreForexRates(
+        from: '2024-01-01',
+        to: '2077-12-31',
+        page: _currentPage,
+        perPage: _perPage,
+      ));
+    }
+  }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    _scrollController.dispose();
+    super.dispose();
   }
 
   @override
@@ -66,32 +91,28 @@ class _ForexScreenState extends State<ForexScreen> {
                   prefixIcon: Icon(Icons.search, color: Appcolor.primary),
                   contentPadding: EdgeInsets.all(16.0),
                 ),
-                onChanged: (query) {
-                  setState(() {
-                    _searchQuery = query;
-                  });
-                },
               ),
             ),
             const SizedBox(height: 16.0),
             Expanded(
               child: BlocBuilder<ForexBloc, ForexState>(
                 builder: (context, state) {
-                  if (state is ForexLoading) {
+                  if (state is ForexLoading && _currentPage == 1) {
                     return const Center(child: LoadingScreen());
                   } else if (state is ForexLoaded) {
-                    final filteredRates = state.rates.where((rate) {
-                      return rate.currency.toLowerCase().contains(_searchQuery.toLowerCase());
-                    }).toList();
-
-                    if (filteredRates.isEmpty) {
+                    if (state.rates.isEmpty) {
                       return const Center(child: Text('No forex rates available.'));
                     }
 
                     return ListView.builder(
-                      itemCount: filteredRates.length,
+                      controller: _scrollController,
+                      itemCount: state.rates.length + 1,
                       itemBuilder: (context, index) {
-                        final rate = filteredRates[index];
+                        if (index == state.rates.length) {
+                          return const Center(child: CircularProgressIndicator());
+                        }
+
+                        final rate = state.rates[index];
                         return Card(
                           margin: const EdgeInsets.symmetric(vertical: 8.0),
                           elevation: 4,
