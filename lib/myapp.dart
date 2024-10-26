@@ -12,6 +12,7 @@ import 'package:finance/bloc/calculator/calculator_bloc.dart';
 import 'package:finance/bloc/forex/forex_bloc.dart';
 import 'package:finance/bloc/home/home_bloc.dart';
 import 'package:finance/bloc/home/home_event.dart';
+import 'package:finance/bloc/joke/joke_bloc.dart';
 import 'package:finance/bloc/lending/lending_bloc.dart';
 import 'package:finance/bloc/lending/lending_event.dart';
 import 'package:finance/bloc/proile/profile_bloc.dart';
@@ -71,6 +72,9 @@ class MyApp extends StatelessWidget {
         BlocProvider(create: (_) => RashifalBloc()..add(LoadRashifal())),
         BlocProvider<ForexBloc>(
           create: (context) => ForexBloc(),
+        ),
+          BlocProvider<JokeBloc>(
+          create: (context) => JokeBloc(),
         ),
       ],
       child: MaterialApp(
