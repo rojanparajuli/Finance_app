@@ -10,7 +10,6 @@ import 'package:finance/bloc/about/about_us_bloc.dart';
 import 'package:finance/bloc/about/about_us_event.dart';
 import 'package:finance/bloc/calculator/calculator_bloc.dart';
 import 'package:finance/bloc/forex/forex_bloc.dart';
-import 'package:finance/bloc/forex/forex_event.dart';
 import 'package:finance/bloc/home/home_bloc.dart';
 import 'package:finance/bloc/home/home_event.dart';
 import 'package:finance/bloc/lending/lending_bloc.dart';
@@ -65,16 +64,14 @@ class MyApp extends StatelessWidget {
           create: (context) => ProfileBloc(firestore)..add(LoadProfile()),
         ),
         BlocProvider(create: (context) => PasswordBloc()),
-        BlocProvider( 
-        create: (context) => MessageBloc(MessageRepository())),
+        BlocProvider(create: (context) => MessageBloc(MessageRepository())),
         BlocProvider(
-      create: (context) => AboutUsBloc()..add(LoadAboutUsEvent())),
-       BlocProvider(
-      create: (_) => TermsBloc()),
-      BlocProvider(
-        create: (_) => RashifalBloc()..add(LoadRashifal())),
-         BlocProvider(
-        create: (context) => ForexBloc()..add(FetchForexRates(from: '2024-01-01', to: '2070-01-31'))),
+            create: (context) => AboutUsBloc()..add(LoadAboutUsEvent())),
+        BlocProvider(create: (_) => TermsBloc()),
+        BlocProvider(create: (_) => RashifalBloc()..add(LoadRashifal())),
+        BlocProvider<ForexBloc>(
+          create: (context) => ForexBloc(),
+        ),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
