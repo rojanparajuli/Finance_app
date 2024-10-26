@@ -2,6 +2,7 @@ import 'package:finance/authentication/bloc/login/login_bloc.dart';
 import 'package:finance/authentication/view/change_password_view.dart';
 import 'package:finance/constant/colors.dart';
 import 'package:finance/screen/about_us/about_us_view.dart';
+import 'package:finance/screen/forex/forex_view.dart';
 import 'package:finance/screen/profile/profile_screen.dart';
 import 'package:finance/screen/rashifal/rashifal_screen.dart';
 import 'package:finance/screen/support/suupport_screen.dart';
@@ -101,6 +102,19 @@ class _DrawerItemState extends State<DrawerItem> {
               context,
               MaterialPageRoute(
                 builder: (context) => const RashifalScreen(),
+              ),
+            );
+          },
+        ),
+          _buildMenuItem(
+          context,
+          icon: Icons.star_border_purple500_sharp,
+          title: 'Foreign Exchange',
+          onTap: () {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => const ForexScreen(),
               ),
             );
           },
